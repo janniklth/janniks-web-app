@@ -15,4 +15,8 @@ router.get('/news', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'news.html'));
 });
 
+router.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'about.html'));
+});
+
 module.exports = router;
