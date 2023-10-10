@@ -17,7 +17,7 @@ document.getElementById('searchWeatherButton').addEventListener('click', functio
 function getWeatherData(city) {
     const apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=48.7823&longitude=9.177&current=temperature_2m&hourly=temperature_2m&daily=weathercode,temperature_2m_max,temperature_2m_min,uv_index_max&timezone=Europe%2FBerlin";
 
-    return fetch(meteoMaticsUrl)
+    return fetch(apiUrl)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
