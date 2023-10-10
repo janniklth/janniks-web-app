@@ -1,3 +1,10 @@
+// define process
+const process = require('process');
+
+// define dotenv
+const dotenv = require('dotenv');
+dotenv.config();
+
 // define the express app
 const express = require('express');
 const app = express();
@@ -16,9 +23,13 @@ app.use((req, res, next) => {
     res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
+// define the port
+const PORT = process.env.PORT || 6001;
 
-const PORT = process.env.PORT || 3000;
+// listen on the port
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-    console.log(`Secret key is ${process.env.TEST_SECRET}`);
+
+    console.log(`- - - - API Keys - - - -`);
+    console.log(`OpenWeatherAPi: ${process.env.OPEN_WEATHER_API_KEY}`);
 });
