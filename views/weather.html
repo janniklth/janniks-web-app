@@ -67,14 +67,16 @@
     <div class="row h-100">
         <!-- First Column -->
         <div class="col-md-7 d-flex flex-column">
+            <!-- Search Bar -->
             <div class="card mb-3 flex-grow-1">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search Location...">
                     <div class="input-group-append">
-                        <button id="searchWeatherButton" class="btn btn-primary" type="button">Search</button>
+                        <button id="searchWeatherButton" class="btn" type="button" style="max-width: 76.7px; max-height: 38px;">Search</button>
                     </div>
                 </div>
             </div>
+            <!-- Current weather -->
             <div class="card mb-3 flex-grow-1 custom-card-height">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div class="d-flex flex-column h-100">
@@ -87,11 +89,11 @@
                     <i class="fas fa-sun fa-7x mr-4"></i>
                 </div>
             </div>
+            <!-- Today`s forecast -->
             <div class="card mb-3 flex-grow-1">
                 <div class="card-body">
                     <h5 class="card-title">TODAY'S FORECAST</h5>
                     <div class="row">
-                        <!-- Uhrzeiten und Icons für den heutigen Forecast -->
                         <div class="col">
                             <h6>06:00 am</h6>
                             <i class="fas fa-cloud fa-2x mb-2"></i>
@@ -125,6 +127,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Air Conditions -->
             <div class="card mb-3 flex-grow-1">
                 <div class="card-body">
                     <h5 class="card-title">AIR CONDITIONS</h5>
@@ -222,9 +225,15 @@
 <script src="/js/weather.js"></script>
 
 <!-- Bootstrap Script -->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
 
 <!-- MDB Script -->
 <script
