@@ -15,7 +15,7 @@ document.getElementById('searchWeatherButton').addEventListener('click', functio
 
 // Function to fetch weather data from OpenWeatherMapAPI
 function getWeatherData(city) {
-    const apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=48.7823&longitude=9.177&current=temperature_2m&hourly=temperature_2m&daily=weathercode,temperature_2m_max,temperature_2m_min,uv_index_max&timezone=Europe%2FBerlin";
+    const apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=48.7823&longitude=9.177&current=temperature_2m,apparent_temperature,rain,weathercode,windspeed_10m&hourly=temperature_2m&daily=weathercode,temperature_2m_max,temperature_2m_min,uv_index_max&timezone=Europe%2FBerlin";
 
     return fetch(apiUrl)
         .then(response => {
@@ -36,9 +36,15 @@ function getWeatherData(city) {
 function showCurrentWeatherData(data) {
     // get elements for current weather
     const currentTemperatureElement = document.getElementById('currentTemperature');
+    const currentRainChanceElement = document.getElementById('currentRainChance');
 
     // set current weather
     currentTemperatureElement.textContent = `${data.current.temperature_2m}°C`;
+    currentRainChanceElement.textContent = `Chance of Rain: ${data.current.rain} %`;
+
+    // log current weather
+    console.log(`Current Temperature: ${data.current.temperature_2m}°C`);
+    console.log(`Chance of Rain: ${data.current.rain} %`);
 }
 
 // Function to get the hourly weather data
@@ -63,4 +69,10 @@ function showWeatherData(data) {
     showDailyWeatherData(data);
 
     console.log(data);
+}
+
+
+// Function to convert weathercode to weather icon
+function getWeatherIcon(weathercode) {
+
 }
