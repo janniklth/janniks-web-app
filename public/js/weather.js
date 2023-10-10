@@ -54,7 +54,23 @@ function showHourlyWeatherData(data) {
 
 // Function to get the daily (7 days) weather data
 function showDailyWeatherData(data) {
+    // get the elements for every day
+    const day1Element = document.getElementById('day1');
+    const day2Element = document.getElementById('day2');
+    const day3Element = document.getElementById('day3');
+    const day4Element = document.getElementById('day4');
+    const day5Element = document.getElementById('day5');
+    const day6Element = document.getElementById('day6');
+    const day7Element = document.getElementById('day7');
 
+    // show temperature for every day
+    day1Element.querySelector('h4').textContent = `${data.daily.temperature_2m_max[0]}°C / ${data.daily.temperature_2m_min[0]}°C`;
+    day2Element.querySelector('h4').textContent = `${data.daily.temperature_2m_max[1]}°C / ${data.daily.temperature_2m_min[1]}°C`;
+    day3Element.querySelector('h4').textContent = `${data.daily.temperature_2m_max[2]}°C / ${data.daily.temperature_2m_min[2]}°C`;
+    day4Element.querySelector('h4').textContent = `${data.daily.temperature_2m_max[3]}°C / ${data.daily.temperature_2m_min[3]}°C`;
+    day5Element.querySelector('h4').textContent = `${data.daily.temperature_2m_max[4]}°C / ${data.daily.temperature_2m_min[4]}°C`;
+    day6Element.querySelector('h4').textContent = `${data.daily.temperature_2m_max[5]}°C / ${data.daily.temperature_2m_min[5]}°C`;
+    day7Element.querySelector('h4').textContent = `${data.daily.temperature_2m_max[6]}°C / ${data.daily.temperature_2m_min[6]}°C`;
 }
 
 // Function to display weather data on the webpage
