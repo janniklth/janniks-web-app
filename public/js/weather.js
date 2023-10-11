@@ -63,6 +63,15 @@ function showDailyWeatherData(data) {
     const day6Element = document.getElementById('day6');
     const day7Element = document.getElementById('day7');
 
+    // show day names for every day
+    day1Element.querySelector('strong').textContent = getDayName(new Date(data.daily.time[0]));
+    day2Element.querySelector('strong').textContent = getDayName(new Date(data.daily.time[1]));
+    day3Element.querySelector('strong').textContent = getDayName(new Date(data.daily.time[2]));
+    day4Element.querySelector('strong').textContent = getDayName(new Date(data.daily.time[3]));
+    day5Element.querySelector('strong').textContent = getDayName(new Date(data.daily.time[4]));
+    day6Element.querySelector('strong').textContent = getDayName(new Date(data.daily.time[5]));
+    day7Element.querySelector('strong').textContent = getDayName(new Date(data.daily.time[6]));
+
     // show temperature for every day
     day1Element.querySelector('h4').textContent = `${data.daily.temperature_2m_max[0]}°C / ${data.daily.temperature_2m_min[0]}°C`;
     day2Element.querySelector('h4').textContent = `${data.daily.temperature_2m_max[1]}°C / ${data.daily.temperature_2m_min[1]}°C`;
@@ -164,4 +173,16 @@ function getWeatherDescription(weathercode) {
         default:
             return 'Unknown';
     }
+}
+
+// Function to convert wind direction to wind direction description
+function getWindDirectionDescription(windDirection) {
+    //....
+}
+
+
+// Function to convert date to day name
+function getDayName(date) {
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    return days[date.getDay()];
 }
