@@ -13,10 +13,20 @@ const app = express();
 const routes = require('./routes/index');
 const path = require("path");
 
-/// use routes and ...
+// import body-parser
+const bodyParser = require('body-parser');
+
+
+// initialize express
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+/// use routes and ... // TODO: edit comment
 app.use(express.static('public'));
 app.use('/', routes);
 app.use(express.static('views', { index: 'home.html' }));
+
 
 // error handler
 app.use((req, res, next) => {
