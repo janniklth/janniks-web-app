@@ -106,28 +106,33 @@
               const pages = data.query.pages;
               for (let pageId in pages) {
                 const page = pages[pageId];
-                const row = document.createElement('div');
-                row.className = 'row mb-3';
 
-                // Add title column
-                const titleCol = document.createElement('div');
-                titleCol.className = 'col';
-                titleCol.textContent = page.title;
-                row.appendChild(titleCol);
+                // Create a Bootstrap card for each result
+                const card = document.createElement('div');
+                card.className = 'card mb-4';
 
-                // Add description column
-                const descCol = document.createElement('div');
-                descCol.className = 'col';
-                descCol.textContent = page.description || 'No description available';
-                row.appendChild(descCol);
+                // Card header for the title
+                const cardHeader = document.createElement('div');
+                cardHeader.className = 'card-header';
+                cardHeader.textContent = page.title;
+                card.appendChild(cardHeader);
 
-                // Add extract column
-                const extractCol = document.createElement('div');
-                extractCol.className = 'col';
-                extractCol.textContent = page.extract || 'No extract available';
-                row.appendChild(extractCol);
+                // Card body for the description and extract
+                const cardBody = document.createElement('div');
+                cardBody.className = 'card-body';
 
-                resultsDiv.appendChild(row);
+                const description = document.createElement('p');
+                description.className = 'card-text';
+                description.textContent = page.description || 'No description available';
+                cardBody.appendChild(description);
+
+                const extract = document.createElement('p');
+                extract.className = 'card-text';
+                extract.textContent = page.extract || 'No extract available';
+                cardBody.appendChild(extract);
+
+                card.appendChild(cardBody);
+                resultsDiv.appendChild(card);
               }
             })
             .catch(error => {
