@@ -1,6 +1,7 @@
 // This file contains the routes for the application
 const express = require('express');
 const path = require('path');
+const axios = require('axios');
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -27,5 +28,33 @@ router.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'login.html'));
 });
 
+router.get('/searchwiki', async (req, res) => {
+    const searchTerm = req.query.q;
+
+    if (!searchTerm) {
+        return res.status(400).send({ error: 'Search term is required.' });
+    }
+
+    const baseURL = "https://de.wikipedia.org/w/api.php";
+    const params = {
+        action: 'query',
+        generator: 'prefixsearch',
+        gpslimit: 4,
+        format: 'json',
+        prop: 'extracts|description',
+        exintro: 1,
+        explaintext: 1,
+        exsentences: 3,
+        gpssearch: searchTerm
+    };
+
+    try {
+        const response = await axios.get(baseURL, { params });
+        res.json(response.data);
+    } catch (error) {
+        console.error("Error while calling Wikipedia API:", error);
+        res.status(500).send({ error: 'Failed to fetch data.' });
+    }
+});
 
 module.exports = router;

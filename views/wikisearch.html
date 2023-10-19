@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- MDB and Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+  <title>Home - Janniks Web App</title>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Janniks Web App</a>
+    <button
+            class="navbar-toggler"
+            type="button"
+            data-mdb-toggle="collapse"
+            data-mdb-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/weather">Weather</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/news">News</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/stocks">Stocks</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <button id="loginButton" type="button" class="btn btn-link me-3">
+          Login / Sign up
+        </button>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- main content -->
+<div class="container mt-5">
+  <h1>Welcome</h1>
+
+  <!-- Search bar and button -->
+  <div class="mb-4">
+    <input type="text" id="searchTerm" class="form-control" placeholder="Search Wikipedia">
+    <button id="searchButton" class="btn btn-primary mt-2">Search</button>
+  </div>
+
+  <!-- Display Wikipedia results -->
+  <div id="results">
+    <!-- Results will be populated here via JavaScript -->
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer mt-auto py-3 bg-light">
+  <div class="container-fluid">
+    <span class="text-muted">Janniks Web App © 2023</span>
+  </div>
+</footer>
+
+<!-- Custom Script -->
+<script>
+  // TODO: move code to separate file
+  document.getElementById('searchButton').addEventListener('click', function() {
+    const searchTerm = document.getElementById('searchTerm').value;
+    fetch('/searchwiki?q=' + searchTerm)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Server error: ' + response.statusText);
+              }
+              return response.json();
+            })
+            .then(data => {
+              if (!data || !data.query || !data.query.pages) {
+                throw new Error('Unexpected response structure from server');
+              }
+
+              console.log(data);
+
+              const resultsDiv = document.getElementById('results');
+              resultsDiv.innerHTML = ''; // Clear any previous results
+
+              const pages = data.query.pages;
+              for (let pageId in pages) {
+                const page = pages[pageId];
+                const row = document.createElement('div');
+                row.className = 'row mb-3';
+
+                // Add title column
+                const titleCol = document.createElement('div');
+                titleCol.className = 'col';
+                titleCol.textContent = page.title;
+                row.appendChild(titleCol);
+
+                // Add description column
+                const descCol = document.createElement('div');
+                descCol.className = 'col';
+                descCol.textContent = page.description || 'No description available';
+                row.appendChild(descCol);
+
+                // Add extract column
+                const extractCol = document.createElement('div');
+                extractCol.className = 'col';
+                extractCol.textContent = page.extract || 'No extract available';
+                row.appendChild(extractCol);
+
+                resultsDiv.appendChild(row);
+              }
+            })
+            .catch(error => {
+              console.error("Error while calling our server proxy:", error);
+              alert("Ein Fehler ist aufgetreten: " + error.message);
+            });
+  });
+</script>
+
+<!-- MDB Script -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+
+</body>
+
+</html>
