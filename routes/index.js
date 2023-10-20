@@ -28,8 +28,17 @@ router.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'login.html'));
 });
 
+
+router.get('/wikisearch', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'wikisearch.html'));
+});
+
 router.get('/searchwiki', async (req, res) => {
     const searchTerm = req.query.q;
+    const count = req.query.count || 4; // Default to 4 if not specified
+
+    console.log("Search term:", searchTerm);
+    console.log("Result count:", count);
 
     if (!searchTerm) {
         return res.status(400).send({ error: 'Search term is required.' });
@@ -39,7 +48,7 @@ router.get('/searchwiki', async (req, res) => {
     const params = {
         action: 'query',
         generator: 'prefixsearch',
-        gpslimit: 4,
+        gpslimit: count,
         format: 'json',
         prop: 'extracts|description',
         exintro: 1,
@@ -56,5 +65,7 @@ router.get('/searchwiki', async (req, res) => {
         res.status(500).send({ error: 'Failed to fetch data.' });
     }
 });
+
+
 
 module.exports = router;

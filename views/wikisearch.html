@@ -60,13 +60,22 @@
 
 <!-- main content -->
 <div class="container mt-5">
-  <h1>Welcome</h1>
+  <h1>Wikipedia article search</h1>
 
   <!-- Search bar and button -->
-  <div class="mb-4">
-    <input type="text" id="searchTerm" class="form-control" placeholder="Search Wikipedia">
-    <button id="searchButton" class="btn btn-primary mt-2">Search</button>
+  <!-- Search bar, number input, and button -->
+  <div class="form-row mb-4">
+    <div class="col-md-9 col-sm-12">
+      <input type="text" id="searchTerm" class="form-control" placeholder="Search Wikipedia">
+    </div>
+    <div class="col-md-2 col-sm-12">
+      <input type="number" id="resultCount" class="form-control" placeholder="Number of results" min="1" max="10">
+    </div>
+    <div class="col-md-1 col-sm-12">
+      <button id="searchButton" class="btn btn-primary">Search</button>
+    </div>
   </div>
+
 
   <!-- Display Wikipedia results -->
   <div id="results">
@@ -82,65 +91,7 @@
 </footer>
 
 <!-- Custom Script -->
-<script>
-  // TODO: move code to separate file
-  document.getElementById('searchButton').addEventListener('click', function() {
-    const searchTerm = document.getElementById('searchTerm').value;
-    fetch('/searchwiki?q=' + searchTerm)
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Server error: ' + response.statusText);
-              }
-              return response.json();
-            })
-            .then(data => {
-              if (!data || !data.query || !data.query.pages) {
-                throw new Error('Unexpected response structure from server');
-              }
-
-              console.log(data);
-
-              const resultsDiv = document.getElementById('results');
-              resultsDiv.innerHTML = ''; // Clear any previous results
-
-              const pages = data.query.pages;
-              for (let pageId in pages) {
-                const page = pages[pageId];
-
-                // Create a Bootstrap card for each result
-                const card = document.createElement('div');
-                card.className = 'card mb-4';
-
-                // Card header for the title
-                const cardHeader = document.createElement('div');
-                cardHeader.className = 'card-header';
-                cardHeader.textContent = page.title;
-                card.appendChild(cardHeader);
-
-                // Card body for the description and extract
-                const cardBody = document.createElement('div');
-                cardBody.className = 'card-body';
-
-                const description = document.createElement('p');
-                description.className = 'card-text';
-                description.textContent = page.description || 'No description available';
-                cardBody.appendChild(description);
-
-                const extract = document.createElement('p');
-                extract.className = 'card-text';
-                extract.textContent = page.extract || 'No extract available';
-                cardBody.appendChild(extract);
-
-                card.appendChild(cardBody);
-                resultsDiv.appendChild(card);
-              }
-            })
-            .catch(error => {
-              console.error("Error while calling our server proxy:", error);
-              alert("Ein Fehler ist aufgetreten: " + error.message);
-            });
-  });
-</script>
+<script src="/js/wikisearch.js"></script>
 
 <!-- MDB Script -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
