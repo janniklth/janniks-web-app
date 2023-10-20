@@ -11,7 +11,7 @@ searchButton.addEventListener('click', function() {
 
     // check if search term is empty and show alert if so
     if (searchTermInput.value === '') {
-        const mdbAlert = `
+        alertContainer.innerHTML = `
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 Search term is required.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -19,8 +19,6 @@ searchButton.addEventListener('click', function() {
                 </button>
             </div>
         `;
-
-        alertContainer.innerHTML = mdbAlert;
 
         const closeButton = document.querySelector('#alertContainer .close');
         closeButton.addEventListener('click', function() {
