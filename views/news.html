@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,18 +10,13 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/style.css">
     <!-- MDB and Font Awesome -->
-    <link
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-            rel="stylesheet"
-    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
-    <link
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-            rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <title>News - Janniks Web App</title>
 </head>
-<body>
+
+<body class="d-flex flex-column min-vh-100">
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -40,7 +36,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link active" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/weather">Weather</a>
@@ -66,9 +62,40 @@
 </nav>
 
 <!-- main content -->
-<div class="container mt-5">
-    <h1>News</h1>
-</div>
+<section class="flex-grow-1 d-flex">
+
+    <div class="container mt-5">
+        <!-- Search bar, number input, and button -->
+        <div class="card mb-4">
+            <div class="card-header text-white bg-primary font-weight-bold">
+                Search for news
+            </div>
+            <div class="card-body">
+
+                <div class="form-row">
+                    <div class="col-lg-9 col-sm-12 mb-2">
+                        <input type="text" id="searchTerm" class="form-control" placeholder="Search topic">
+                    </div>
+                    <div class="col-lg-2 col-sm-12 mb-2">
+                        <input type="number" id="resultCount" class="form-control" placeholder="Number of results" min="1" max="20">
+                    </div>
+                    <div class="col-lg-1 col-sm-12">
+                        <button id="searchButton" class="btn btn-primary" style="max-width: 76.7px; max-height: 38px;">Search</button>
+                    </div>
+                </div>
+
+            </div>
+        </div> <!-- Ende der Card -->
+
+        <div id="alertContainer"></div>
+
+
+        <!-- Display Wikipedia results -->
+        <div id="results">
+            <!-- Results will be populated here via JavaScript -->
+        </div>
+    </div>
+</section>
 
 <!-- Footer -->
 <footer class="footer mt-auto py-3 bg-light">
@@ -78,13 +105,11 @@
 </footer>
 
 <!-- Custom Script -->
-<script src="../public/js/main.js"></script>
+<script src="/js/newssearch.js"></script>
 
 <!-- MDB Script -->
-<script
-        type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
-></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
 
 </body>
+
 </html>
