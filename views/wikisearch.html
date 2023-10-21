@@ -16,7 +16,7 @@
   <title>Wikisearch - Janniks Web App</title>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -62,40 +62,43 @@
 </nav>
 
 <!-- main content -->
-<div class="container mt-5">
-<!--  <h1>Wikipedia article search</h1>-->
+<section class="flex-grow-1 d-flex">
 
-  <!-- Search bar and button -->
-  <!-- Search bar, number input, and button -->
-  <div class="card mb-4">
-    <div class="card-header text-white bg-primary font-weight-bold">
-      Search Wikipedia
-    </div>
-    <div class="card-body">
+  <div class="container mt-5">
+    <!--  <h1>Wikipedia article search</h1>-->
 
-      <div class="form-row">
-        <div class="col-lg-9 col-sm-12 mb-2">
-          <input type="text" id="searchTerm" class="form-control" placeholder="Search Wikipedia">
-        </div>
-        <div class="col-lg-2 col-sm-12 mb-2">
-          <input type="number" id="resultCount" class="form-control" placeholder="Number of results" min="1" max="20">
-        </div>
-        <div class="col-lg-1 col-sm-12">
-          <button id="searchButton" class="btn btn-primary" style="max-width: 76.7px; max-height: 38px;">Search</button>
-        </div>
+    <!-- Search bar and button -->
+    <!-- Search bar, number input, and button -->
+    <div class="card mb-4">
+      <div class="card-header text-white bg-primary font-weight-bold">
+        Search Wikipedia
       </div>
+      <div class="card-body">
 
+        <div class="form-row">
+          <div class="col-lg-9 col-sm-12 mb-2">
+            <input type="text" id="searchTerm" class="form-control" placeholder="Search Wikipedia">
+          </div>
+          <div class="col-lg-2 col-sm-12 mb-2">
+            <input type="number" id="resultCount" class="form-control" placeholder="Number of results" min="1" max="20">
+          </div>
+          <div class="col-lg-1 col-sm-12">
+            <button id="searchButton" class="btn btn-primary" style="max-width: 76.7px; max-height: 38px;">Search</button>
+          </div>
+        </div>
+
+      </div>
+    </div> <!-- Ende der Card -->
+
+    <div id="alertContainer"></div>
+
+
+    <!-- Display Wikipedia results -->
+    <div id="results">
+      <!-- Results will be populated here via JavaScript -->
     </div>
-  </div> <!-- Ende der Card -->
-
-  <div id="alertContainer"></div>
-
-
-  <!-- Display Wikipedia results -->
-  <div id="results">
-    <!-- Results will be populated here via JavaScript -->
   </div>
-</div>
+</section>
 
 <!-- Footer -->
 <footer class="footer mt-auto py-3 bg-light">
