@@ -4,7 +4,7 @@ const resultCountInput = document.getElementById('resultCount');
 const alertContainer = document.getElementById('alertContainer');
 const resultsDiv = document.getElementById('results');
 
-searchButton.addEventListener('click', function() {
+searchButton.addEventListener('click', function () {
     // Clear the results and alert container
     resultsDiv.innerHTML = '';
     alertContainer.innerHTML = '';
@@ -21,7 +21,7 @@ searchButton.addEventListener('click', function() {
         `;
 
         const closeButton = document.querySelector('#alertContainer .close');
-        closeButton.addEventListener('click', function() {
+        closeButton.addEventListener('click', function () {
             alertContainer.innerHTML = '';
         });
         return;
@@ -54,14 +54,47 @@ searchButton.addEventListener('click', function() {
                 const colDiv = document.createElement('div');
                 colDiv.className = 'col-lg-6';
 
-                // Create a Bootstrap card for each result
+                // Create a card for each result
                 const card = document.createElement('div');
                 card.className = 'card mb-4';
 
                 // Card header for the title
                 const cardHeader = document.createElement('h5');
-                cardHeader.className = 'card-header font-weight-bold'; // bold title
-                cardHeader.textContent = page.title;
+                cardHeader.className = 'card-header font-weight-bold d-flex justify-content-between';
+
+                // Title text
+                const titleText = document.createElement('span');
+                titleText.textContent = page.title;
+                cardHeader.appendChild(titleText);
+
+                // Speaker icon with click handler and hover event listener to play the audio
+                const speakerLink = document.createElement('a'); // Create a link (or you can use button) element
+                speakerLink.href = "#";  // Add a dummy href or the action you want to perform
+                speakerLink.className = "text-muted"; // Bootstrap class to make the icon muted in appearance
+                speakerLink.style.cursor = 'pointer'; // Make it apparent that it's clickable
+
+                const speakerIcon = document.createElement('i');
+                speakerIcon.className = 'fas fa-volume-up';
+                speakerLink.appendChild(speakerIcon); // Append the icon to the link
+
+                // Add a hover effect
+                speakerLink.addEventListener('mouseover', function () {
+                    speakerLink.classList.remove('text-muted');
+                    speakerLink.classList.add('text-primary');  // Change color to Bootstrap's primary color on hover
+                });
+                speakerLink.addEventListener('mouseout', function () {
+                    speakerLink.classList.remove('text-primary');
+                    speakerLink.classList.add('text-muted');  // Revert back to muted color on mouse out
+                });
+
+                // add click handler to play audio
+                speakerLink.addEventListener('click', function () {
+                    console.log('Playing audio for ' + page.title);
+                });
+
+                cardHeader.appendChild(speakerLink);
+
+
                 card.appendChild(cardHeader);
 
                 // Card body for the description and extract
