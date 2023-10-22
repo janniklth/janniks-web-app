@@ -15,8 +15,7 @@ document.getElementById('searchWeatherButton').addEventListener('click', functio
 
 // Function to fetch weather data from OpenWeatherMapAPI
 function getWeatherData(city) {
-    const apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=48.7823&longitude=9.177&current=temperature_2m,apparent_temperature,rain,weathercode,windspeed_10m&hourly=temperature_2m&daily=weathercode,temperature_2m_max,temperature_2m_min,uv_index_max&timezone=Europe%2FBerlin";
-
+    const apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=48.7823&longitude=9.177&current=temperature_2m,apparent_temperature,precipitation,rain,weathercode,windspeed_10m&hourly=temperature_2m&daily=weathercode,temperature_2m_max,temperature_2m_min,uv_index_max&timezone=Europe%2FBerlin";
     return fetch(apiUrl)
         .then(response => {
             if (!response.ok) {
