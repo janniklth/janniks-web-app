@@ -104,6 +104,7 @@ searchButton.addEventListener('click', function () {
 
                         event.preventDefault();  // Prevent default link behavior
                         const utterance = new SpeechSynthesisUtterance(page.extract || 'No extract available');
+                        utterance.lang = 'de-DE';
                         speechSynthesis.speak(utterance);
                         utterance.addEventListener('end', function () {
                             speakerIcon.className = 'fas fa-volume-up'; // Change the icon back to the speaker
