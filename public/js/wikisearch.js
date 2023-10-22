@@ -4,6 +4,11 @@ const resultCountInput = document.getElementById('resultCount');
 const alertContainer = document.getElementById('alertContainer');
 const resultsDiv = document.getElementById('results');
 
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 searchButton.addEventListener('click', function () {
     // Clear the results and alert container
     resultsDiv.innerHTML = '';
@@ -75,26 +80,42 @@ searchButton.addEventListener('click', function () {
 
                 const speakerIcon = document.createElement('i');
                 speakerIcon.className = 'fas fa-volume-up';
-                speakerLink.appendChild(speakerIcon); // Append the icon to the link
+                speakerLink.appendChild(speakerIcon);
 
-                // Add a hover effect
+                // add mouseover (hover) effect to change to primary color
                 speakerLink.addEventListener('mouseover', function () {
                     speakerLink.classList.remove('text-muted');
-                    speakerLink.classList.add('text-primary');  // Change color to Bootstrap's primary color on hover
+                    speakerLink.classList.add('text-primary');
                 });
+
+                // add mouseout (hover) effect to change back to muted
                 speakerLink.addEventListener('mouseout', function () {
                     speakerLink.classList.remove('text-primary');
-                    speakerLink.classList.add('text-muted');  // Revert back to muted color on mouse out
+                    speakerLink.classList.add('text-muted');
                 });
 
                 // add click handler to play audio
                 speakerLink.addEventListener('click', function () {
-                    console.log('Playing audio for ' + page.title);
+                    // Check if speech synthesis is speaking, if so, cancel it
+                    if(!speechSynthesis.speaking) {
+
+                        console.log('Playing audio for ' + page.title);
+                        speakerIcon.className = 'fas fa-spinner fa-spin';
+
+                        event.preventDefault();  // Prevent default link behavior
+                        const utterance = new SpeechSynthesisUtterance(page.extract || 'No extract available');
+                        speechSynthesis.speak(utterance);
+                        utterance.addEventListener('end', function () {
+                            speakerIcon.className = 'fas fa-volume-up'; // Change the icon back to the speaker
+                        });
+                    }
+                    else {
+                        speechSynthesis.cancel();
+                        speakerIcon.className = 'fas fa-volume-up'; // Change the icon back to the speaker
+                    }
                 });
 
                 cardHeader.appendChild(speakerLink);
-
-
                 card.appendChild(cardHeader);
 
                 // Card body for the description and extract
@@ -117,7 +138,7 @@ searchButton.addEventListener('click', function () {
 
                 card.appendChild(cardBody);
                 colDiv.appendChild(card);
-                rowDiv.appendChild(colDiv); // Add the card to the row
+                rowDiv.appendChild(colDiv);
             }
         })
         .catch(error => {
