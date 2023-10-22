@@ -5,10 +5,6 @@ const alertContainer = document.getElementById('alertContainer');
 const resultsDiv = document.getElementById('results');
 
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 searchButton.addEventListener('click', function () {
     // Clear the results and alert container
     resultsDiv.innerHTML = '';
