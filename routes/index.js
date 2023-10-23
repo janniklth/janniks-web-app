@@ -16,6 +16,10 @@ router.get('/news', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'news.html'));
 });
 
+router.get('/stocks', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'stocks.html'));
+});
+
 router.get('/about', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'about.html'));
 });

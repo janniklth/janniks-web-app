@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- MDB and Font Awesome -->
+  <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          rel="stylesheet"
+  />
+  <!-- Google Fonts -->
+  <link
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          rel="stylesheet"
+  />
+  <title>Stocks - Janniks Web App</title>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Janniks Web App</a>
+    <button
+            class="navbar-toggler"
+            type="button"
+            data-mdb-toggle="collapse"
+            data-mdb-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/weather">Weather</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/news">News</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/stocks">Stocks</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/wikisearch">Wikisearch</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <button id="loginButton" type="button" class="btn btn-link me-3">
+          Login / Sign up
+        </button>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- main content -->
+<div class="container-fluid">
+  <div class="row h-100 mt-3">
+    <!-- left column -->
+    <div class="col-md-7 d-flex flex-column">
+      <!-- Search Bar -->
+      <div class="card mb-3 flex-grow-1">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search Location...">
+          <div class="input-group-append">
+            <button id="searchWeatherButton" class="btn" type="button"
+                    style="max-width: 76.7px; max-height: 38px;">Search
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- actual course -->
+      <div class="card mb-3 flex-grow-1 custom-card-height">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div>
+            <h1 id="stockName">Apple Inc.</h1>
+            <h2 id="stockPrice">$150.25</h2>
+          </div>
+          <div>
+            <h5 id="stockChange">+1.23 (+0.83%)</h5>
+            <p id="lastUpdated">Last updated: 10:15 AM</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- general stock info -->
+      <div class="card mb-3 flex-grow-1">
+        <div class="card-body">
+          <h5 class="card-title">Aktieninformationen</h5>
+          <p><strong>Marktkapitalisierung:</strong> <span id="marketCap">$2.4T</span></p>
+          <p><strong>Öffnen:</strong> <span id="openPrice">$149.00</span></p>
+          <p><strong>Hoch:</strong> <span id="highPrice">$151.00</span></p>
+          <p><strong>Tief:</strong> <span id="lowPrice">$148.50</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- right column -->
+    <div class="col-md-5 mb-3">
+      <!-- Watchlist -->
+      <div class="card h-100 d-flex flex-column">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Watchlist</h5>
+          <!-- Beispielaktien für die Watchlist -->
+          <div class="mb-2">
+            <strong>Microsoft Corp.</strong> <span id="msftPrice">$299.00</span>
+          </div>
+          <div class="mb-2">
+            <strong>Google LLC.</strong> <span id="googlPrice">$2,800.00</span>
+          </div>
+          <!-- ... Weitere Aktien können hier hinzugefügt werden ... -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer mt-auto py-3 bg-light">
+  <div class="container-fluid">
+    <span class="text-muted">Janniks Web App © 2023</span>
+  </div>
+</footer>
+
+<!-- Custom Script -->
+<script src="../public/js/main.js"></script>
+
+<!-- MDB Script -->
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
+></script>
+
+</body>
+</html>
