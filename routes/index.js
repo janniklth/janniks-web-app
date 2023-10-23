@@ -70,6 +70,23 @@ router.get('/searchwiki', async (req, res) => {
     }
 });
 
+router.get('/fetchStockData', async (req, res) => {
+    const searchTerm = req.query.symbol;
 
+    const params = {
+        function: 'TIME_SERIES_DAILY',
+        symbol: searchTerm,
+        apikey: process.env.ALPHA_VANTAGE_API_KEY || "P9F0L5E1ZTC2UQ6W"
+    };
+
+    try {
+        const response = await axios.get("https://www.alphavantage.co/query?", { params });
+        console.log(response.data);
+        res.json(response.data);
+    } catch (error) {
+        console.error("Error while calling AlphaVantage API:", error);
+        res.status(500).send({ error: 'Failed to fetch data.' });
+    }
+});
 
 module.exports = router;
