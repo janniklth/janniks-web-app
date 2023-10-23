@@ -73,14 +73,17 @@
       <!-- Search Bar -->
       <div class="card mb-3 flex-grow-1">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search Location...">
+          <input type="text" id="searchStockTerm" class="form-control" placeholder="Search stock...">
           <div class="input-group-append">
-            <button id="searchWeatherButton" class="btn" type="button"
+            <button id="searchStockButton" class="btn" type="button"
                     style="max-width: 76.7px; max-height: 38px;">Search
             </button>
           </div>
         </div>
       </div>
+
+      <!-- Alert Container -->
+      <div id="alertContainer"></div>
 
       <!-- actual course -->
       <div class="card mb-3 flex-grow-1 custom-card-height">
@@ -136,7 +139,7 @@
 </footer>
 
 <!-- Custom Script -->
-<script src="../public/js/main.js"></script>
+<script src="/js/stocks.js"></script>
 
 <!-- MDB Script -->
 <script

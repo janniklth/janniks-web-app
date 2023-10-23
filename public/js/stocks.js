@@ -1,0 +1,26 @@
+console.log("stocks.js loaded");
+
+// get elements
+const searchButton = document.getElementById('searchStockButton');
+const searchTermInput = document.getElementById('searchStockTerm');
+const alertContainer = document.getElementById('alertContainer');
+
+
+// add event listener
+searchButton.addEventListener('click', function () {
+    if (searchTermInput.value === '') {
+        alertContainer.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Search term is required.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span> 
+                </button>
+            </div>
+        `;
+        const closeButton = document.querySelector('#alertContainer .close');
+        closeButton.addEventListener('click', function () {
+            alertContainer.innerHTML = '';
+        });
+    }
+
+});
