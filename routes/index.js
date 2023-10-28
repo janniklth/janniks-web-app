@@ -196,6 +196,7 @@ router.post('/auth/register', async (req, res) => {
         });
 });
 
+// route to login user
 router.post('/auth/login', async (req, res) => {
     console.log(req.body);
     signInWithEmailAndPassword(auth, req.body.email, req.body.password)
@@ -211,6 +212,7 @@ router.post('/auth/login', async (req, res) => {
         });
 });
 
+// route to logout user
 router.post('/auth/logout', async (req, res) => {
     req.session.destroy(err => {
         if(err) {
@@ -221,6 +223,13 @@ router.post('/auth/logout', async (req, res) => {
     });
 });
 
-
+// route to check if user is logged in
+router.get('/auth/check', async (req, res) => {
+    if (req.session.user) {
+        res.send('User is logged in!');
+    } else {
+        res.status(401).send('User is not logged in!');
+    }
+});
 
 module.exports = router;
