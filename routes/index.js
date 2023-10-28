@@ -217,11 +217,9 @@ router.post('/auth/logout', async (req, res) => {
             return res.status(500).send('Server error');
         }
         res.clearCookie('session-name');  // 'session-name' sollte durch den Namen Ihres Session-Cookies ersetzt werden
-        res.redirect('/login');
+        res.redirect('/auth/login');
     });
 });
-
-
 
 
 
