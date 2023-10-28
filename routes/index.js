@@ -213,13 +213,13 @@ router.post('/auth/login', async (req, res) => {
 });
 
 // route to logout user
-router.post('/auth/logout', async (req, res) => {
+router.get('/auth/logout', async (req, res) => {
     req.session.destroy(err => {
         if(err) {
             return res.status(500).send('Server error');
         }
-        res.clearCookie('session-name');  // 'session-name' sollte durch den Namen Ihres Session-Cookies ersetzt werden
-        res.redirect('/auth/login');
+        res.clearCookie('connect.sid');  // TODO: 'session-name' sollte durch den Namen Ihres Session-Cookies ersetzt werden
+        res.redirect('/login');
     });
 });
 

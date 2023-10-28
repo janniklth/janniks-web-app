@@ -11,7 +11,6 @@ window.addEventListener('load', () => {
 
     fetch('/auth/check')
         .then(response => {
-            console.log(response);
             if (!response.ok) {
                 throw new Error('Server error: ' + response.statusText);
             }
