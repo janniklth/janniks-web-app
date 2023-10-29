@@ -43,14 +43,71 @@ searchButton.addEventListener('click', function () {
 });
 
 
+// function addToWatchlist(stock) {
+//     // create new element for the stock
+//     const stockElement = document.createElement("div");
+//     stockElement.textContent = stock;
+//
+//     // add the stock element to the watchlist container
+//     watchlistContainer.appendChild(stockElement);
+// }
+
 function addToWatchlist(stock) {
-    // create new element for the stock
+    // create a new stock element
     const stockElement = document.createElement("div");
-    stockElement.textContent = stock;
+    stockElement.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
+
+    // create a container for stock details using Bootstrap Grid
+    const detailsElement = document.createElement("div");
+    detailsElement.classList.add("row", "w-100");
+
+    // create a container for symbol and name (col-6)
+    const symbolNameContainer = document.createElement("div");
+    symbolNameContainer.classList.add("col-6");
+
+    // create an element for the symbol (in größere Schrift und primäre Textfarbe)
+    const symbolElement = document.createElement("div");
+    symbolElement.classList.add("h5", "mb-0", "text-primary");
+    symbolElement.textContent = stock;
+
+    // create an element for the company name (darunter, in kleinerer Schrift und grau)
+    const nameElement = document.createElement("div");
+    nameElement.classList.add("small", "text-secondary");
+    nameElement.textContent = "Company Name"; // Placeholder for company name
+
+    // create a container for the price and change (col-6, insgesamt rechts)
+    const priceChangeContainer = document.createElement("div");
+    priceChangeContainer.classList.add("col-6", "d-flex", "flex-column", "text-right");
+
+    // create an element for the stock price
+    const priceElement = document.createElement("div");
+    priceElement.classList.add("font-weight-bold");
+    priceElement.textContent = "Current Price"; // Placeholder for stock price
+
+    // create an element for the stock change (positive oder negativ)
+    const changeElement = document.createElement("div");
+    changeElement.classList.add("font-weight-bold");
+    changeElement.textContent = "+2.45%"; // Placeholder for stock change
+    if (false) {
+        changeElement.classList.add("text-danger");
+    } else {
+        changeElement.classList.add("text-success");
+    }
+
+    // append elements to the stock element
+    symbolNameContainer.appendChild(symbolElement);
+    symbolNameContainer.appendChild(nameElement);
+    priceChangeContainer.appendChild(priceElement);
+    priceChangeContainer.appendChild(changeElement);
+    detailsElement.appendChild(symbolNameContainer);
+    detailsElement.appendChild(priceChangeContainer);
+    stockElement.appendChild(detailsElement);
 
     // add the stock element to the watchlist container
+    const watchlistContainer = document.getElementById("watchlistContainer");
     watchlistContainer.appendChild(stockElement);
 }
+
 
 
 function fetchWatchlist() {
