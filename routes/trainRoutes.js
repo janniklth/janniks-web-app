@@ -85,13 +85,8 @@ router.get('/getTimetable', async (req, res) => {
         }
     };
 
-    console.log("URL:", url);
-
     const response = await axios.get(url, options);
     const data = response.data;
-
-    console.log(data);
-
 
     res.status(200).send({ stationId: stationId });
 });
