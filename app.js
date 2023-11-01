@@ -40,8 +40,11 @@ const PORT = process.env.PORT || 6001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 
-    console.log(`- - - - API Keys - - - -`);
+    console.log(`- - - - - - - API Keys - - - - - - -`);
     console.log(`OpenWeatherAPi: ${process.env.OPEN_WEATHER_API_KEY}`);
+    console.log(`NewsAPI: ${process.env.NEWS_API_KEY}`);
+    console.log(`AlphaVantage: ${process.env.ALPHA_VANTAGE_API_KEY}`);
     console.log('DB Client ID:', process.env.DB_CLIENT_ID);
     console.log('DB Client Secret:', process.env.DB_CLIENT_SECRET);
+    console.log(`- - - - - - - - - - - - - - - - - - -`);
 });
