@@ -6,6 +6,9 @@ const axios = require('axios');
 const router = express.Router();
 const bodyParser = require('body-parser');
 
+const db_trainstations = require('../trainstation_reader');
+
+
 // firebase and auth
 const {auth, admin, db} = require('../firebase');
 const {checkAuth} = require('../middleware');
@@ -35,6 +38,10 @@ router.get('/news', (req, res) => {
 
 router.get('/stocks', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'stocks.html'));
+});
+
+router.get('/train_dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'train_dashboard.html'));
 });
 
 router.get('/about', (req, res) => {
@@ -89,11 +96,12 @@ router.get('/searchwiki', async (req, res) => {
 });
 
 router.get('/fetchStockData', async (req, res) => {
-    const searchTerm = req.query.symbol;
+    const _symbol = req.query.symbol;
+    const _function = req.query.function || 'TIME_SERIES_DAILY';
 
     const params = {
-        function: 'TIME_SERIES_DAILY',
-        symbol: searchTerm,
+        function: _function,
+        symbol: _symbol,
         apikey: process.env.ALPHA_VANTAGE_API_KEY || "P9F0L5E1ZTC2UQ6W"
     };
 
@@ -231,5 +239,55 @@ router.get('/auth/check', async (req, res) => {
         res.status(401).send('User is not logged in!');
     }
 });
+
+
+async function addNamesToResults(results) {
+    for (const result of results) {
+        try {
+            const name = await db_trainstations.findNameForId(result.id);
+            result.name = name;
+        } catch (error) {
+            console.error(error);
+            result.name = 'Unbekannter Bahnhof';
+        }
+    }
+}
+
+
+import('db-stations-autocomplete').then((module) => {
+    const { autocomplete } = module;
+    router.get('/autocomplete', async (req, res) => {
+        const searchTerm = req.query.q;
+
+        // convert search term to string
+        const term = searchTerm.toString();
+
+        let searchResults = await autocomplete(term, results = 10, fuzzy = false, completion = true);
+        addNamesToResults(searchResults)
+            .then(() => {
+                res.send(searchResults);
+            });
+    });
+
+    router.get('/autocomplete/names', async (req, res) => {
+        const searchTerm = req.query.q;
+
+        // Rufe die Ergebnisse mit der autocomplete-Funktion ab
+        const searchResultsNames = await autocomplete(searchTerm, results = 10, fuzzy = false, completion = true);
+
+        addNamesToResults(searchResultsNames)
+            .then(() => {
+                const names = searchResultsNames.map((result) => result.name);
+                console.log(names);
+                res.send(names);
+            });
+    });
+
+}).catch((error) => {
+    console.error('Fehler beim Importieren des Moduls:', error);
+});
+
+
+
 
 module.exports = router;
