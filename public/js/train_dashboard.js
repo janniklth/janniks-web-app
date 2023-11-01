@@ -22,7 +22,7 @@ searchStationInput.addEventListener('input', async (event) => {
 
     // get results from server
     try {
-        const response = await fetch(`/autocomplete?q=${searchTerm}`);
+        const response = await fetch(`/train/autocompleteStations?q=${searchTerm}`);
         if (response.ok) {
             const results = await response.json();
 

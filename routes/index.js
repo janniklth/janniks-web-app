@@ -6,7 +6,7 @@ const axios = require('axios');
 const router = express.Router();
 const bodyParser = require('body-parser');
 
-const db_trainstations = require('../trainstation_reader');
+
 
 
 // firebase and auth
@@ -23,6 +23,9 @@ router.use(session({
     resave: false,
     saveUninitialized: true
 }));
+
+const trainRoutes = require('./trainRoutes');
+router.use('/train', trainRoutes);
 
 router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'home.html'));
@@ -240,52 +243,6 @@ router.get('/auth/check', async (req, res) => {
     }
 });
 
-
-async function addNamesToResults(results) {
-    for (const result of results) {
-        try {
-            const name = await db_trainstations.findNameForId(result.id);
-            result.name = name;
-        } catch (error) {
-            console.error(error);
-            result.name = 'Unbekannter Bahnhof';
-        }
-    }
-}
-
-
-import('db-stations-autocomplete').then((module) => {
-    const { autocomplete } = module;
-    router.get('/autocomplete', async (req, res) => {
-        const searchTerm = req.query.q;
-
-        // convert search term to string
-        const term = searchTerm.toString();
-
-        let searchResults = await autocomplete(term, results = 10, fuzzy = false, completion = true);
-        addNamesToResults(searchResults)
-            .then(() => {
-                res.send(searchResults);
-            });
-    });
-
-    router.get('/autocomplete/names', async (req, res) => {
-        const searchTerm = req.query.q;
-
-        // Rufe die Ergebnisse mit der autocomplete-Funktion ab
-        const searchResultsNames = await autocomplete(searchTerm, results = 10, fuzzy = false, completion = true);
-
-        addNamesToResults(searchResultsNames)
-            .then(() => {
-                const names = searchResultsNames.map((result) => result.name);
-                console.log(names);
-                res.send(names);
-            });
-    });
-
-}).catch((error) => {
-    console.error('Fehler beim Importieren des Moduls:', error);
-});
 
 
 
