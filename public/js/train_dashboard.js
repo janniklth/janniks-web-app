@@ -71,5 +71,18 @@ searchButton.addEventListener('click', async () => {
     const date = dateInput.value;
     const hour = hourInput.value;
     console.log("Request: Station:", searchStationInput.value, "Date:", date, "Hour:", hour);
+
+    // get results from server
+    try {
+        const response = await fetch(`/train/getTimetable?stationName=${searchStationInput.value}&date=${date}&time=${hour}`);
+        if (response.ok) {
+            const results = await response.json();
+            console.log(results);
+        } else {
+            console.error('Fehler beim Abrufen der Ergebnisse.');
+        }
+    } catch (error) {
+        console.error('Fehler beim Abrufen der Ergebnisse:', error);
+    }
 });
 

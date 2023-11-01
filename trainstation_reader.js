@@ -17,15 +17,20 @@ function findIdForName(stationName) {
         rl.on('line', (line) => {
             const parts = line.split(';');
             if (parts[3] === stationName) {
-                rl.close();
+                rl.close(); // End reading the file as a match was found
                 resolve(parts[0]);
             }
         });
 
         rl.on('close', () => {
-            reject('Bahnhof nicht gefunden');
+            if (!rl.closed) {
+                // Check if the 'close' event was called due to a match
+                reject('No ID found for stationName: ' + stationName);
+            }
         });
     });
+
+    rl.closed = false; // A custom property to track whether 'close' was manually called
 }
 
 

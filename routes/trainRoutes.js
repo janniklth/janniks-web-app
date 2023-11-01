@@ -20,7 +20,6 @@ async function addNamesToResults(results) {
     }
 }
 
-
 import('db-stations-autocomplete').then((module) => {
     const { autocomplete } = module;
     router.get('/autocompleteStations', async (req, res) => {
@@ -35,23 +34,33 @@ import('db-stations-autocomplete').then((module) => {
                 res.send(searchResults);
             });
     });
-
-    router.get('/autocompleteStations/names', async (req, res) => {
-        const searchTerm = req.query.q;
-
-        // Rufe die Ergebnisse mit der autocomplete-Funktion ab
-        const searchResultsNames = await autocomplete(searchTerm, results = 10, fuzzy = false, completion = true);
-
-        addNamesToResults(searchResultsNames)
-            .then(() => {
-                const names = searchResultsNames.map((result) => result.name);
-                console.log(names);
-                res.send(names);
-            });
-    });
-
 }).catch((error) => {
     console.error('Fehler beim Importieren des Moduls:', error);
+});
+
+router.get('/getTimetable', async (req, res) => {
+    const stationName = req.query.stationName;
+    const date = req.query.date;
+    const time = req.query.time;
+
+    console.log("Station name:", stationName);
+    console.log("Date:", date);
+    console.log("Time:", time);
+
+    if (!stationName) {
+        return res.status(400).send({ error: 'Station name is required.' });
+    }
+
+    if (!date) {
+        return res.status(400).send({ error: 'Date is required.' });
+    }
+
+    const stationId = await db_trainstations.findIdForName(stationName);
+    if (!stationId) {
+        return res.status(400).send({ error: 'Invalid station name.' });
+    }
+
+    res.status(200).send({ stationId: stationId });
 });
 
 module.exports = router;
