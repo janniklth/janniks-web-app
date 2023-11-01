@@ -7,6 +7,11 @@ const router = express.Router();
 // Import db_trainstations
 const db_trainstations = require('../trainstation_reader');
 
+// Import process and load environment variables
+const process = require('process');
+const db_client_id = process.env.DB_CLIENT_ID;
+const db_client_secret = process.env.DB_CLIENT_SECRET;
+
 
 async function addNamesToResults(results) {
     for (const result of results) {

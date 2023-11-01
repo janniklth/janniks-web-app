@@ -42,4 +42,6 @@ app.listen(PORT, () => {
 
     console.log(`- - - - API Keys - - - -`);
     console.log(`OpenWeatherAPi: ${process.env.OPEN_WEATHER_API_KEY}`);
+    console.log('DB Client ID:', process.env.DB_CLIENT_ID);
+    console.log('DB Client Secret:', process.env.DB_CLIENT_SECRET);
 });
