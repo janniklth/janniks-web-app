@@ -18,6 +18,10 @@
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
             rel="stylesheet"
     />
+    <!-- jscharting.js -->
+    <script src="https://code.jscharting.com/latest/jscharting.js"></script>
+
+    <!-- Title -->
     <title>Stocks - Janniks Web App</title>
 </head>
 <body>
@@ -109,6 +113,17 @@
                     <p><strong>Tief:</strong> <span id="lowPrice">$148.50</span></p>
                 </div>
             </div>
+
+            <!-- Chart Card -->
+            <div class="card mb-3 flex-grow-1">
+                <div class="card-body">
+                    <h5 class="card-title">Stock Chart</h5>
+                    <!-- Hier wird das Diagramm eingefügt -->
+                    <div id="chartDiv" style="height: 300px;"></div>
+                </div>
+            </div>
+
+
         </div>
 
         <!-- right column -->
