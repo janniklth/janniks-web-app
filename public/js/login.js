@@ -26,8 +26,9 @@ loginForm.addEventListener('submit', function (e) {
         .then(response => {
             console.log(response);
             if (response.status === 200) {
-                alert('Login erfolgreich!');
-                // TODO: redirect to ...
+                // alert('Login erfolgreich!');
+                // redirect to homepage
+                window.location.href = '/';
             } else {
                 return response.text().then(text => {
                     throw new Error(text)
