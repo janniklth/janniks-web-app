@@ -10,8 +10,6 @@ const watchlistContainer = document.getElementById('watchlistContainer');
 let companyName;
 
 
-
-
 // add event listener
 searchButton.addEventListener('click', function () {
     const searchTerm = searchTermInput.value;
@@ -45,18 +43,20 @@ searchButton.addEventListener('click', function () {
 });
 
 function addToWatchlist(stock) {
-    // Fetch stock data, including company name
-    fetchStockData(stock, "OVERVIEW")
-        .then(data => {
-            companyName = data.CompanyName;
+    // Create a new stock element and add it to the watchlist
+    const stockElement = createStockElement(stock, "companyName");
+    watchlistContainer.appendChild(stockElement);
 
-            // Create a new stock element and add it to the watchlist
-            const stockElement = createStockElement(stock, companyName);
-            watchlistContainer.appendChild(stockElement);
-        })
-        .catch(error => {
-            console.error("Error while fetching stock data:", error);
-        });
+    // // Fetch stock data, including company name
+    // fetchStockData(stock, "OVERVIEW")
+    //     .then(data => {
+    //         companyName = data.CompanyName;
+    //
+    //
+    //     })
+    //     .catch(error => {
+    //         console.error("Error while fetching stock data:", error);
+    //     });
 }
 
 // Create a stock element with symbol, company name, and details
@@ -69,9 +69,9 @@ function createStockElement(symbol, name) {
     const detailsElement = document.createElement("div");
     detailsElement.classList.add("row", "w-100");
 
-    // Create a container for symbol and name (col-6)
+    // Create a container for symbol and name (col-5)
     const symbolNameContainer = document.createElement("div");
-    symbolNameContainer.classList.add("col-6");
+    symbolNameContainer.classList.add("col-5");
 
     // Create an element for the symbol (in größere Schrift und primäre Textfarbe)
     const symbolElement = document.createElement("div");
@@ -102,91 +102,71 @@ function createStockElement(symbol, name) {
         changeElement.classList.add("text-success");
     }
 
+    // Create a container for the delete icon (col-1)
+    const deleteContainer = document.createElement("div");
+    deleteContainer.classList.add("col-1", "text-right", "d-flex", "align-items-center");
+
+    // Create a red cross icon using Font Awesome (as text content)
+    const deleteIcon = document.createElement("i");
+    deleteIcon.classList.add("fas", "fa-times", "fa-lg", "text-danger");
+
+    // Set data-toggle and data-tooltip attributes for Bootstrap Tooltip
+    deleteIcon.setAttribute("data-toggle", "tooltip");
+    deleteIcon.setAttribute("data-tooltip", "tooltip");
+    deleteIcon.setAttribute("title", "Remove from Watchlist");
+
+    // Initialize Bootstrap Tooltip
+    $(deleteIcon).tooltip();
+
+    // Add event listener to the delete icon
+    deleteIcon.addEventListener("click", function () {
+        // hide the tooltip
+        $(deleteIcon).tooltip('hide');
+
+        // find the parent element (stockElement) and remove it from the watchlist
+        const parentStockElement = deleteIcon.closest(".list-group-item");
+        if (parentStockElement) {
+            // Remove the stockElement from the watchlist
+            parentStockElement.remove();
+        }
+
+        // Remove the stock from the watchlist in the database
+        fetch("/stocks/watchlist/remove", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                stockSymbol: symbol
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Server error: ' + response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error("Error while removing stock from watchlist:", error);
+            });
+    });
+
     // Append elements to the stock element
     symbolNameContainer.appendChild(symbolElement);
     symbolNameContainer.appendChild(nameElement);
     priceChangeContainer.appendChild(priceElement);
     priceChangeContainer.appendChild(changeElement);
+    deleteContainer.appendChild(deleteIcon);
     detailsElement.appendChild(symbolNameContainer);
     detailsElement.appendChild(priceChangeContainer);
+    detailsElement.appendChild(deleteContainer);
     stockElement.appendChild(detailsElement);
 
     return stockElement;
 }
 
 
-
-// function addToWatchlist(stock) {
-//     // fetch stock data
-//     fetchStockData(stock, "OVERVIEW")
-//         .then(data => {
-//             companyName = data.Name;
-//             console.log(companyName);
-//         })
-//         .catch(error => {
-//             console.error("Error while fetching stock data:", error);
-//         });
-//
-//
-//     // create a new stock element
-//     const stockElement = document.createElement("div");
-//     stockElement.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
-//
-//     // create a container for stock details using Bootstrap Grid
-//     const detailsElement = document.createElement("div");
-//     detailsElement.classList.add("row", "w-100");
-//
-//     // create a container for symbol and name (col-6)
-//     const symbolNameContainer = document.createElement("div");
-//     symbolNameContainer.classList.add("col-6");
-//
-//     // create an element for the symbol (in größere Schrift und primäre Textfarbe)
-//     const symbolElement = document.createElement("div");
-//     symbolElement.classList.add("h5", "mb-0", "text-primary");
-//     symbolElement.textContent = stock;
-//
-//     // create an element for the company name (darunter, in kleinerer Schrift und grau)
-//     const nameElement = document.createElement("div");
-//     nameElement.classList.add("small", "text-secondary");
-//     nameElement.textContent = companyName; // Placeholder for company name
-//
-//     // create a container for the price and change (col-6, insgesamt rechts)
-//     const priceChangeContainer = document.createElement("div");
-//     priceChangeContainer.classList.add("col-6", "d-flex", "flex-column", "text-right");
-//
-//     // create an element for the stock price
-//     const priceElement = document.createElement("div");
-//     priceElement.classList.add("font-weight-bold");
-//     priceElement.textContent = "Current Price"; // Placeholder for stock price
-//
-//     // create an element for the stock change (positive oder negativ)
-//     const changeElement = document.createElement("div");
-//     changeElement.classList.add("font-weight-bold");
-//     changeElement.textContent = "+2.45%"; // Placeholder for stock change
-//     if (false) {
-//         changeElement.classList.add("text-danger");
-//     } else {
-//         changeElement.classList.add("text-success");
-//     }
-//
-//     // append elements to the stock element
-//     symbolNameContainer.appendChild(symbolElement);
-//     symbolNameContainer.appendChild(nameElement);
-//     priceChangeContainer.appendChild(priceElement);
-//     priceChangeContainer.appendChild(changeElement);
-//     detailsElement.appendChild(symbolNameContainer);
-//     detailsElement.appendChild(priceChangeContainer);
-//     stockElement.appendChild(detailsElement);
-//
-//     // add the stock element to the watchlist container
-//     const watchlistContainer = document.getElementById("watchlistContainer");
-//     watchlistContainer.appendChild(stockElement);
-// }
-
-
-
 function fetchWatchlist() {
-    fetch("/watchlist")
+    fetch("/stocks/watchlist/get")
         .then(response => {
             if (!response.ok) {
                 throw new Error('Server error: ' + response.statusText);
@@ -201,8 +181,7 @@ function fetchWatchlist() {
                         Watchlist is empty.
                     </div>`;
                 return;
-            }
-            else {
+            } else {
                 data.stocks.forEach(stock => {
                     addToWatchlist(stock);
                     console.log(stock);
@@ -225,7 +204,7 @@ function fetchWatchlist() {
 // function to fetch stock data to display in the watchlist
 function fetchStockData(stockSymbol, functionName) {
     return new Promise((resolve, reject) => {
-        const url = `/fetchStockData?symbol=${stockSymbol}&function=${functionName}`;
+        const url = `/stocks/fetchStockData?symbol=${stockSymbol}&function=${functionName}`;
 
         fetch(url)
             .then(response => {
@@ -242,6 +221,8 @@ function fetchStockData(stockSymbol, functionName) {
             });
     });
 }
+
+
 // JS
 var chart = JSC.chart('chartDiv', {
     debug: true,

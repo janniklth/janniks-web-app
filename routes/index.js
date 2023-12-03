@@ -27,6 +27,9 @@ router.use(session({
 const trainRoutes = require('./trainRoutes');
 router.use('/train', trainRoutes);
 
+const stocksRoutes = require('./stocksRoutes');
+router.use('/stocks', stocksRoutes);
+
 router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'home.html'));
 });
@@ -98,79 +101,7 @@ router.get('/searchwiki', async (req, res) => {
     }
 });
 
-router.get('/fetchStockData', async (req, res) => {
-    const _symbol = req.query.symbol;
-    const _function = req.query.function || 'TIME_SERIES_DAILY';
 
-    const params = {
-        function: _function,
-        symbol: _symbol,
-        apikey: process.env.ALPHA_VANTAGE_API_KEY || "P9F0L5E1ZTC2UQ6W"
-    };
-
-    try {
-        const response = await axios.get("https://www.alphavantage.co/query?", {params});
-        console.log(response.data);
-        res.json(response.data);
-    } catch (error) {
-        console.error("Error while calling AlphaVantage API:", error);
-        res.status(500).send({error: 'Failed to fetch data.'});
-    }
-});
-
-router.get('/watchlist', checkAuth, async (req, res) => {
-    const uid = req.session.user;
-
-    console.log("User ID:", uid);
-
-    const watchlistRef = db.collection('watchlists').doc(uid);
-    const watchlistDoc = await watchlistRef.get();
-
-    if (!watchlistDoc.exists) {
-        return res.status(404).send("User not found.");
-    }
-
-    console.log("Data:");
-    console.log(watchlistDoc.data());
-
-    res.status(200).json(watchlistDoc.data());
-});
-
-router.post('/watchlist/add', checkAuth, async (req, res) => {
-    const uid = req.session.user;
-    const stockSymbol = req.body.stockSymbol;  // Zum Beispiel: 'AAPL' für Apple
-
-    if (!stockSymbol) {
-        return res.status(400).send("Stock symbol is required.");
-    }
-
-    const userRef = db.collection('users').doc(uid);
-
-    // Add the stock symbol to the user's watchlist
-    await userRef.update({
-        watchlist: admin.firestore.FieldValue.arrayUnion(stockSymbol)
-    });
-
-    res.status(200).send("Added to watchlist.");
-});
-
-router.post('/watchlist/remove', checkAuth, async (req, res) => {
-    const uid = req.session.user;
-    const stockSymbol = req.body.stockSymbol;
-
-    if (!stockSymbol) {
-        return res.status(400).send("Stock symbol is required.");
-    }
-
-    const userRef = db.collection('users').doc(uid);
-
-    // Remove the stock symbol from the user's watchlist
-    await userRef.update({
-        watchlist: admin.firestore.FieldValue.arrayRemove(stockSymbol)
-    });
-
-    res.status(200).send("Removed from watchlist.");
-});
 
 
 
