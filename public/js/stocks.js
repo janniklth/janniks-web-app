@@ -2,6 +2,7 @@ console.log("stocks.js loaded");
 
 // get elements
 const searchButton = document.getElementById('searchStockButton');
+const timePeriodSelect = document.getElementById('timePeriodSelect');
 const searchTermInput = document.getElementById('searchStockTerm');
 const alertContainer = document.getElementById('alertContainer');
 const watchlistContainer = document.getElementById('watchlistContainer');
@@ -14,7 +15,7 @@ let companyName;
 searchButton.addEventListener('click', function () {
     const searchTerm = searchTermInput.value;
 
-    if (searchTermInput === '') {
+    if (searchTerm === '') {
         alertContainer.innerHTML = `
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 Search term is required.
@@ -29,16 +30,7 @@ searchButton.addEventListener('click', function () {
         });
     } else {
         // fetch the data
-        fetch("/fetchStockData?symbol=" + searchTerm)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Server error: ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-            });
+        fetchStockData(searchTerm);
     }
 });
 
@@ -47,16 +39,8 @@ function addToWatchlist(stock) {
     const stockElement = createStockElement(stock, "companyName");
     watchlistContainer.appendChild(stockElement);
 
-    // // Fetch stock data, including company name
-    // fetchStockData(stock, "OVERVIEW")
-    //     .then(data => {
-    //         companyName = data.CompanyName;
-    //
-    //
-    //     })
-    //     .catch(error => {
-    //         console.error("Error while fetching stock data:", error);
-    //     });
+    // fetch stock data
+    // ...
 }
 
 // Create a stock element with symbol, company name, and details
@@ -202,24 +186,73 @@ function fetchWatchlist() {
 }
 
 // function to fetch stock data to display in the watchlist
-function fetchStockData(stockSymbol, functionName) {
-    return new Promise((resolve, reject) => {
-        const url = `/stocks/fetchStockData?symbol=${stockSymbol}&function=${functionName}`;
+function fetchStockData(stockSymbol) {
 
-        fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Server error: ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                resolve(data);
-            })
-            .catch(error => {
-                reject(error);
+    // get actual date in format YYYY-MM-DD (fromDate)
+    const today = new Date();
+    const toDate = today.toISOString().split('T')[0];
+
+    console.log(timePeriodSelect.value);
+
+    // get toDate from timePeriodSelect
+    let fromDate;
+    if (timePeriodSelect.value == "1w") {
+        const week = new Date();
+        week.setDate(week.getDate() - 7);
+        fromDate = week.toISOString().split('T')[0];
+    } else if (timePeriodSelect.value == "1m") {
+        const month = new Date();
+        month.setMonth(month.getMonth() - 1);
+        fromDate = month.toISOString().split('T')[0];
+    } else if (timePeriodSelect.value == "3m") {
+        const month = new Date();
+        month.setMonth(month.getMonth() - 3);
+        fromDate = month.toISOString().split('T')[0];
+    } else if (timePeriodSelect.value == "6m") {
+        const month = new Date();
+        month.setMonth(month.getMonth() - 6);
+        fromDate = month.toISOString().split('T')[0];
+    } else if (timePeriodSelect.value == "1y") {
+        const year = new Date();
+        year.setFullYear(year.getFullYear() - 1);
+        fromDate = year.toISOString().split('T')[0];
+    } else {
+        fromDate = "2023-10-01";
+    }
+
+    console.log(fromDate);
+
+
+    // fetch stock data with symbol, fromDate, toDate
+    return fetch("/stocks/fetchStockData?symbol=" + stockSymbol + "&fromDate=" + fromDate + "&toDate=" + toDate)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Server error: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            return data;
+        })
+        .catch(error => {
+            // clear watchlist container and show error message
+            alertContainer.innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Error while fetching stock data: ${error.message}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`;
+
+            const closeButton = document.querySelector('#alertContainer .close');
+            closeButton.addEventListener('click', function () {
+                alertContainer.innerHTML = '';
             });
-    });
+
+            // throw error
+            console.error("Error while fetching stock data:", error);
+            throw new Error("Error while fetching stock data:", error);
+        });
 }
 
 
@@ -322,3 +355,4 @@ var chart = JSC.chart('chartDiv', {
 
 // fetch the watchlist when the page is loaded
 window.addEventListener("load", fetchWatchlist);
+

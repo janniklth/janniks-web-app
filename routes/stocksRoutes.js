@@ -13,7 +13,52 @@ const {db, admin} = require("../firebase");
 
 
 router.get('/fetchStockData', async (req, res) => {
+    try {
+        // check if all required query parameters are set
+        if (!req.query.symbol || !req.query.fromDate || !req.query.toDate) {
+            return res.status(400).send('Missing Query Parameters');
+        }
 
+        const stockSymbol = req.query.symbol
+        const fromDate = req.query.fromDate
+        const toDate = req.query.toDate
+
+        // log query parameters
+        console.log('Symbol:', stockSymbol);
+        console.log('From Date:', fromDate);
+        console.log('To Date:', toDate);
+
+        // create url
+        const apiUrl = `https://financialmodelingprep.com/api/v3/historical-price-full/${stockSymbol}?apikey=${process.env.FMP_API_KEY}&from=${fromDate}&to=${toDate}`;
+
+        // configure request
+        const requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        // send request
+        const response = await fetch(apiUrl, requestOptions);
+        const result = await response.json();
+
+
+
+        // filter data
+        const filteredData = result.historical.map(entry => ({
+            date: entry.date,
+            close: entry.close
+        }));
+
+        // log result
+        console.log(filteredData);
+
+        // send response to client
+        res.json(filteredData);
+
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 router.get('/watchlist/get', checkAuth, async (req, res) => {
@@ -71,7 +116,6 @@ router.post('/watchlist/remove', checkAuth, async (req, res) => {
 
     res.status(200).send("Removed from watchlist.");
 });
-
 
 
 module.exports = router;
