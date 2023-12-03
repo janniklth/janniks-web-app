@@ -74,17 +74,25 @@
     <div class="row h-100 mt-3">
         <!-- left column -->
         <div class="col-md-7 d-flex flex-column">
-            <!-- Search Bar -->
+            <!-- Search Bar with Bootstrap-styled Select -->
             <div class="card mb-3 flex-grow-1">
                 <div class="input-group">
                     <input type="text" id="searchStockTerm" class="form-control" placeholder="Search stock...">
                     <div class="input-group-append">
-                        <button id="searchStockButton" class="btn" type="button"
-                                style="max-width: 76.7px; max-height: 38px;">Search
+                        <select id="timePeriodSelect" class="form-select">
+                            <option value="1w">1 Week</option>
+                            <option value="1m">1 Month</option>
+                            <option value="3m">3 Months</option>
+                            <option value="6m">6 Months</option>
+                            <option value="1y">1 Year</option>
+                        </select>
+                        <button id="searchStockButton" class="btn-secondary" type="button">Search
+<!--                                style="max-width: 76.7px; max-height: 38px;">Search-->
                         </button>
                     </div>
                 </div>
             </div>
+
 
             <!-- Alert Container -->
             <div id="alertContainer"></div>
@@ -107,12 +115,21 @@
             <div class="card mb-3 flex-grow-1">
                 <div class="card-body">
                     <h5 class="card-title">Aktieninformationen</h5>
-                    <p><strong>Marktkapitalisierung:</strong> <span id="marketCap">$2.4T</span></p>
-                    <p><strong>Öffnen:</strong> <span id="openPrice">$149.00</span></p>
-                    <p><strong>Hoch:</strong> <span id="highPrice">$151.00</span></p>
-                    <p><strong>Tief:</strong> <span id="lowPrice">$148.50</span></p>
+
+                    <!-- split info into two columns -->
+                    <div class="row">
+                        <div class="col">
+                            <p><strong>Marktkapitalisierung:</strong> <span id="marketCap">$2.4T</span></p>
+                            <p><strong>Öffnen:</strong> <span id="openPrice">$149.00</span></p>
+                        </div>
+                        <div class="col">
+                            <p><strong>Hoch:</strong> <span id="highPrice">$151.00</span></p>
+                            <p><strong>Tief:</strong> <span id="lowPrice">$148.50</span></p>
+                        </div>
+                    </div>
                 </div>
             </div>
+
 
             <!-- Chart Card -->
             <div class="card mb-3 flex-grow-1">
