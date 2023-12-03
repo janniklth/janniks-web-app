@@ -220,8 +220,6 @@ function fetchStockData(stockSymbol) {
         fromDate = "2023-10-01";
     }
 
-    console.log(fromDate);
-
 
     // fetch stock data with symbol, fromDate, toDate
     return fetch("/stocks/fetchStockData?symbol=" + stockSymbol + "&fromDate=" + fromDate + "&toDate=" + toDate)
@@ -257,7 +255,7 @@ function fetchStockData(stockSymbol) {
 
 
 // JS
-var chart = JSC.chart('chartDiv', {
+var chart = JSC.chart('chartContainer', {
     debug: true,
     type: 'line',
     legend_visible: false,
@@ -355,4 +353,3 @@ var chart = JSC.chart('chartDiv', {
 
 // fetch the watchlist when the page is loaded
 window.addEventListener("load", fetchWatchlist);
-
