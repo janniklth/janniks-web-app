@@ -6,16 +6,29 @@ const timePeriodSelect = document.getElementById('timePeriodSelect');
 const searchTermInput = document.getElementById('searchStockTerm');
 const alertContainer = document.getElementById('alertContainer');
 const watchlistContainer = document.getElementById('watchlistContainer');
+const addToWatchlistButton = document.getElementById('addToWatchlistButton');
 
 // define some vars
 let companyName;
+let lastSuccessfulSearchTerm;
 
+// JS
+var chart = JSC.chart('chartContainer', {
+    debug: true,
+    type: 'line',
+    legend_visible: false,
+    defaultPoint_marker_type: 'none',
+    xAxis_crosshair_enabled: true,
+    yAxis_formatString: 'c',
+    series: []
+});
 
 // add event listener
 searchButton.addEventListener('click', function () {
     const searchTerm = searchTermInput.value;
 
     if (searchTerm === '') {
+        // Display an alert if the search term is empty
         alertContainer.innerHTML = `
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 Search term is required.
@@ -29,14 +42,229 @@ searchButton.addEventListener('click', function () {
             alertContainer.innerHTML = '';
         });
     } else {
-        // fetch the data
-        fetchStockData(searchTerm);
+        // Fetch the data and replace the chart
+        fetchStockDataAndReplaceChart(searchTerm);
+        fetchCompanyData(searchTerm);
+
+        // Show the cards
+        document.getElementById('actualCourseCard').classList.remove('d-none');
+        document.getElementById('generalInfoCard').classList.remove('d-none');
+        document.getElementById('chartCard').classList.remove('d-none');
+
+        // Show the add to watchlist button and add search term (upper case)
+        addToWatchlistButton.classList.remove('d-none');
+        addToWatchlistButton.innerHTML = "Add " + searchTerm.toUpperCase() + " to watchlist";
+        lastSuccessfulSearchTerm = searchTerm;
+
+        // clear alert container
+        alertContainer.innerHTML = '';
     }
 });
 
+// add event listener
+addToWatchlistButton.addEventListener('click', function () {
+    // add stock to watchlist
+    fetch("/stocks/watchlist/add", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            stockSymbol: lastSuccessfulSearchTerm.toUpperCase(),
+            companyName: companyName
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Server error: ' + response.statusText);
+            }
+
+            // Create a new stock element and add it to the watchlist
+            const stockElement = createStockElement(lastSuccessfulSearchTerm.toUpperCase(), companyName);
+            watchlistContainer.appendChild(stockElement);
+        })
+        .catch(error => {
+            // clear alert container
+            alertContainer.innerHTML = '';
+
+            // show error message
+            alertContainer.innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Error while adding stock to watchlist: ${error.message}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span> 
+                    </button>
+                </div>`;
+
+            const closeButton = document.querySelector('#alertContainer .close');
+            closeButton.addEventListener('click', function () {
+                alertContainer.innerHTML = '';
+            });
+
+            // Throw error
+            console.error("Error while adding stock to watchlist:", error);
+            throw new Error("Error while adding stock to watchlist:", error);
+        })
+});
+
+// Function to fetch company data
+function fetchCompanyData(stockSymbol) {
+    // Fetch company data with symbol
+    return fetch("/stocks/fetchCompanyData?symbol=" + stockSymbol)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Server error: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // get relevant data
+            companyName = data[0].companyName;
+            stockPrice = data[0].price;
+            marketCap = data[0].mktCap;
+            changes = data[0].changes;
+            currency = data[0].currency;
+
+            // add + if changes is positive
+            if (changes > 0) {
+                changes = "+" + changes;
+            }
+
+            // calculate absolute percentage change
+            percentage_change = Math.abs(changes) / stockPrice * 100;
+
+            // get actual time and update last updated
+            const today = new Date();
+            const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            document.getElementById('lastUpdated').innerHTML = "Last updated: " + time;
+
+            // display data
+            document.getElementById('companyName').innerHTML = companyName;
+            document.getElementById('stockPrice').innerHTML = stockPrice + " " + currency;
+            document.getElementById('marketCap').innerHTML = formatCompactNumber(marketCap) + " " + currency;
+            document.getElementById('stockChange').innerHTML = changes + " " + currency + " (" + percentage_change.toFixed(2) + "%)";
+        })
+        .catch(error => {
+            // Clear watchlist container and show error message
+            alertContainer.innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Error while fetching company data: ${error.message}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span> 
+                    </button>
+                </div>`;
+
+            const closeButton = document.querySelector('#alertContainer .close');
+            closeButton.addEventListener('click', function () {
+                alertContainer.innerHTML = '';
+            });
+
+            // Throw error
+            console.error("Error while fetching company data:", error);
+            throw new Error("Error while fetching company data:", error);
+        });
+}
+
+// Function to fetch stock data
+function fetchStockData(stockSymbol) {
+    // Get the current date in the format YYYY-MM-DD (fromDate)
+    const today = new Date();
+    const toDate = today.toISOString().split('T')[0];
+
+    // Get toDate from timePeriodSelect
+    let fromDate;
+    if (timePeriodSelect.value == "1m") {
+        const month = new Date();
+        month.setMonth(month.getMonth() - 1);
+        fromDate = month.toISOString().split('T')[0];
+    } else if (timePeriodSelect.value == "3m") {
+        const month = new Date();
+        month.setMonth(month.getMonth() - 3);
+        fromDate = month.toISOString().split('T')[0];
+    } else if (timePeriodSelect.value == "6m") {
+        const month = new Date();
+        month.setMonth(month.getMonth() - 6);
+        fromDate = month.toISOString().split('T')[0];
+    } else if (timePeriodSelect.value == "1y") {
+        const year = new Date();
+        year.setFullYear(year.getFullYear() - 1);
+        fromDate = year.toISOString().split('T')[0];
+    } else {
+        fromDate = "2023-10-01";
+    }
+
+    // Fetch stock data with symbol, fromDate, toDate
+    return fetch("/stocks/fetchStockData?symbol=" + stockSymbol + "&fromDate=" + fromDate + "&toDate=" + toDate)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Server error: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            return data;
+        })
+        .catch(error => {
+            // Clear watchlist container and show error message
+            alertContainer.innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Error while fetching stock data: ${error.message}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`;
+
+            const closeButton = document.querySelector('#alertContainer .close');
+            closeButton.addEventListener('click', function () {
+                alertContainer.innerHTML = '';
+            });
+
+            // Throw error
+            console.error("Error while fetching stock data:", error);
+            throw new Error("Error while fetching stock data:", error);
+        });
+}
+
+// Function to fetch stock data and replace the chart
+function fetchStockDataAndReplaceChart(stockSymbol) {
+    // Call the fetchStockData function
+    fetchStockData(stockSymbol)
+        .then(stockData => {
+            // Extract date and price from the received data
+            const dataPoints = stockData.map(item => ({x: new Date(item.date), y: item.close}));
+
+            // update general stock data
+            document.getElementById('openPrice').innerHTML = stockData[0].open + " USD";
+            document.getElementById('highPrice').innerHTML = stockData[0].high + " USD";
+            document.getElementById('lowPrice').innerHTML = stockData[0].low + " USD";
+
+            // Destroy the existing chart instance
+            chart.destroy();
+
+            // Create a new chart instance
+            chart = JSC.chart('chartContainer', {
+                debug: true,
+                type: 'line',
+                legend_visible: false,
+                defaultPoint_marker_type: 'none',
+                xAxis_crosshair_enabled: true,
+                yAxis_formatString: 'c',
+                series: [{
+                    name: stockSymbol,
+                    points: dataPoints
+                }]
+            });
+        })
+        .catch(error => {
+            // Handle error
+            console.error("Error while fetching stock data:", error);
+        });
+}
+
+
 function addToWatchlist(stock) {
     // Create a new stock element and add it to the watchlist
-    const stockElement = createStockElement(stock, "companyName");
+    const stockElement = createStockElement(stock.symbol, stock.companyName);
     watchlistContainer.appendChild(stockElement);
 
     // fetch stock data
@@ -173,11 +401,20 @@ function fetchWatchlist() {
             }
         })
         .catch(error => {
-            // clear watchlist container and show error message
-            watchlistContainer.innerHTML = `
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Error while fetching watchlist: ${error.message}
-                </div>`;
+            if (error.message === "Server error: Unauthorized") {
+                // clear watchlist container and show error message
+                watchlistContainer.innerHTML = `
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        Please login to see your watchlist.
+                    </div>`;
+                return;
+            } else {
+                // clear watchlist container and show error message
+                watchlistContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Error while fetching watchlist: ${error.message}
+                    </div>`;
+            }
 
             // throw error
             console.error("Error while fetching watchlist:", error);
@@ -185,171 +422,19 @@ function fetchWatchlist() {
         });
 }
 
-// function to fetch stock data to display in the watchlist
-function fetchStockData(stockSymbol) {
-
-    // get actual date in format YYYY-MM-DD (fromDate)
-    const today = new Date();
-    const toDate = today.toISOString().split('T')[0];
-
-    console.log(timePeriodSelect.value);
-
-    // get toDate from timePeriodSelect
-    let fromDate;
-    if (timePeriodSelect.value == "1w") {
-        const week = new Date();
-        week.setDate(week.getDate() - 7);
-        fromDate = week.toISOString().split('T')[0];
-    } else if (timePeriodSelect.value == "1m") {
-        const month = new Date();
-        month.setMonth(month.getMonth() - 1);
-        fromDate = month.toISOString().split('T')[0];
-    } else if (timePeriodSelect.value == "3m") {
-        const month = new Date();
-        month.setMonth(month.getMonth() - 3);
-        fromDate = month.toISOString().split('T')[0];
-    } else if (timePeriodSelect.value == "6m") {
-        const month = new Date();
-        month.setMonth(month.getMonth() - 6);
-        fromDate = month.toISOString().split('T')[0];
-    } else if (timePeriodSelect.value == "1y") {
-        const year = new Date();
-        year.setFullYear(year.getFullYear() - 1);
-        fromDate = year.toISOString().split('T')[0];
-    } else {
-        fromDate = "2023-10-01";
+function formatCompactNumber(number) {
+    if (number < 1000) {
+        return number;
+    } else if (number >= 1000 && number < 1_000_000) {
+        return (number / 1000).toFixed(1) + "K";
+    } else if (number >= 1_000_000 && number < 1_000_000_000) {
+        return (number / 1_000_000).toFixed(1) + "M";
+    } else if (number >= 1_000_000_000 && number < 1_000_000_000_000) {
+        return (number / 1_000_000_000).toFixed(1) + "B";
+    } else if (number >= 1_000_000_000_000 && number < 1_000_000_000_000_000) {
+        return (number / 1_000_000_000_000).toFixed(1) + "T";
     }
-
-
-    // fetch stock data with symbol, fromDate, toDate
-    return fetch("/stocks/fetchStockData?symbol=" + stockSymbol + "&fromDate=" + fromDate + "&toDate=" + toDate)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Server error: ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            return data;
-        })
-        .catch(error => {
-            // clear watchlist container and show error message
-            alertContainer.innerHTML = `
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Error while fetching stock data: ${error.message}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>`;
-
-            const closeButton = document.querySelector('#alertContainer .close');
-            closeButton.addEventListener('click', function () {
-                alertContainer.innerHTML = '';
-            });
-
-            // throw error
-            console.error("Error while fetching stock data:", error);
-            throw new Error("Error while fetching stock data:", error);
-        });
 }
 
-
-// JS
-var chart = JSC.chart('chartContainer', {
-    debug: true,
-    type: 'line',
-    legend_visible: false,
-    defaultPoint_marker_type: 'none',
-    xAxis_crosshair_enabled: true,
-    yAxis_formatString: 'c',
-    series: [
-        {
-            name: 'Purchases',
-            points: [
-                [new Date(2010, 1, 1), 28.15],
-                [new Date(2010, 1, 2), 28.2],
-                [new Date(2010, 1, 3), 28.37],
-                [new Date(2010, 1, 4), 27.59],
-                [new Date(2010, 1, 5), 27.76],
-                [new Date(2010, 1, 8), 27.47],
-                [new Date(2010, 1, 9), 27.75],
-                [new Date(2010, 1, 10), 27.73],
-                [new Date(2010, 1, 11), 27.86],
-                [new Date(2010, 1, 12), 27.68],
-                [new Date(2010, 1, 16), 28.22],
-                [new Date(2010, 1, 17), 28.46],
-                [new Date(2010, 1, 18), 28.84],
-                [new Date(2010, 1, 19), 28.64],
-                [new Date(2010, 1, 22), 28.6],
-                [new Date(2010, 1, 23), 28.2],
-                [new Date(2010, 1, 24), 28.5],
-                [new Date(2010, 1, 25), 28.47],
-                [new Date(2010, 1, 26), 28.54],
-                [new Date(2010, 2, 1), 28.89],
-                [new Date(2010, 2, 2), 28.33],
-                [new Date(2010, 2, 3), 28.33],
-                [new Date(2010, 2, 4), 28.5],
-                [new Date(2010, 2, 5), 28.46],
-                [new Date(2010, 2, 8), 28.5],
-                [new Date(2010, 2, 9), 28.67],
-                [new Date(2010, 2, 10), 28.84],
-                [new Date(2010, 2, 11), 29.05],
-                [new Date(2010, 2, 12), 29.14],
-                [new Date(2010, 2, 15), 29.16],
-                [new Date(2010, 2, 16), 29.24],
-                [new Date(2010, 2, 17), 29.5],
-                [new Date(2010, 2, 18), 29.48],
-                [new Date(2010, 2, 19), 29.46],
-                [new Date(2010, 2, 22), 29.47],
-                [new Date(2010, 2, 23), 29.75],
-                [new Date(2010, 2, 24), 29.52],
-                [new Date(2010, 2, 25), 29.88],
-                [new Date(2010, 2, 26), 29.53],
-                [new Date(2010, 2, 29), 29.46],
-                [new Date(2010, 2, 30), 29.64],
-                [new Date(2010, 2, 31), 29.16],
-                [new Date(2010, 3, 1), 29.03],
-                [new Date(2010, 3, 5), 29.14],
-                [new Date(2010, 3, 6), 29.19],
-                [new Date(2010, 3, 7), 29.22],
-                [new Date(2010, 3, 8), 29.79],
-                [new Date(2010, 3, 9), 30.2],
-                [new Date(2010, 3, 12), 30.18],
-                [new Date(2010, 3, 13), 30.31],
-                [new Date(2010, 3, 14), 30.68],
-                [new Date(2010, 3, 15), 30.73],
-                [new Date(2010, 3, 16), 30.53],
-                [new Date(2010, 3, 19), 30.9],
-                [new Date(2010, 3, 20), 31.22],
-                [new Date(2010, 3, 21), 31.19],
-                [new Date(2010, 3, 22), 31.25],
-                [new Date(2010, 3, 23), 30.82],
-                [new Date(2010, 3, 26), 30.97],
-                [new Date(2010, 3, 27), 30.71],
-                [new Date(2010, 3, 28), 30.77],
-                [new Date(2010, 3, 29), 30.86],
-                [new Date(2010, 3, 30), 30.4],
-                [new Date(2010, 4, 3), 30.72],
-                [new Date(2010, 4, 4), 29.99],
-                [new Date(2010, 4, 5), 29.72],
-                [new Date(2010, 4, 6), 28.85],
-                [new Date(2010, 4, 7), 28.08],
-                [new Date(2010, 4, 10), 28.81],
-                [new Date(2010, 4, 11), 28.75],
-                [new Date(2010, 4, 12), 29.31],
-                [new Date(2010, 4, 13), 29.11],
-                [new Date(2010, 4, 14), 28.8],
-                [new Date(2010, 4, 17), 28.81],
-                [new Date(2010, 4, 18), 28.6],
-                [new Date(2010, 4, 19), 28.24],
-                [new Date(2010, 4, 20), 27.11],
-                [new Date(2010, 4, 21), 26.84],
-                [new Date(2010, 4, 24), 26.27]
-            ]
-        }
-    ]
-});
-
-
-// fetch the watchlist when the page is loaded
+// Fetch the watchlist when the page is loaded
 window.addEventListener("load", fetchWatchlist);

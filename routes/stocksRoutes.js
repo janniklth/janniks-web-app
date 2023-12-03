@@ -23,11 +23,6 @@ router.get('/fetchStockData', async (req, res) => {
         const fromDate = req.query.fromDate
         const toDate = req.query.toDate
 
-        // log query parameters
-        console.log('Symbol:', stockSymbol);
-        console.log('From Date:', fromDate);
-        console.log('To Date:', toDate);
-
         // create url
         const apiUrl = `https://financialmodelingprep.com/api/v3/historical-price-full/${stockSymbol}?apikey=${process.env.FMP_API_KEY}&from=${fromDate}&to=${toDate}`;
 
@@ -41,19 +36,54 @@ router.get('/fetchStockData', async (req, res) => {
         const response = await fetch(apiUrl, requestOptions);
         const result = await response.json();
 
-
-
         // filter data
         const filteredData = result.historical.map(entry => ({
             date: entry.date,
-            close: entry.close
+            open: entry.open,
+            close: entry.close,
+            high: entry.high,
+            low: entry.low
         }));
 
-        // log result
-        console.log(filteredData);
+        // reverse data
+        filteredData.reverse();
+
+        console.log('Data:', filteredData);
 
         // send response to client
         res.json(filteredData);
+
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+router.get('/fetchCompanyData', async (req, res) => {
+    try {
+        // check if all required query parameters are set
+        if (!req.query.symbol) {
+            return res.status(400).send('Missing Query Parameters');
+        }
+
+        const stockSymbol = req.query.symbol
+
+        // create url
+        const apiUrl = `https://financialmodelingprep.com/api/v3/profile/${stockSymbol}?apikey=${process.env.FMP_API_KEY}`;
+
+        // configure request
+        const requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        // send request
+        const response = await fetch(apiUrl, requestOptions);
+        const result = await response.json();
+
+        // send response to client
+        res.json(result);
 
     } catch (error) {
         console.error('Error:', error);
@@ -81,18 +111,27 @@ router.get('/watchlist/get', checkAuth, async (req, res) => {
 
 router.post('/watchlist/add', checkAuth, async (req, res) => {
     const uid = req.session.user;
-    const stockSymbol = req.body.stockSymbol;  // Zum Beispiel: 'AAPL' für Apple
+    const stockSymbol = req.body.stockSymbol;
+    const companyName = req.body.companyName;
 
-    if (!stockSymbol) {
+    console.log("Stock symbol to add:", stockSymbol);
+    console.log("Company name to add:", companyName);
+
+    if (!stockSymbol || !companyName) {
         return res.status(400).send("Stock symbol is required.");
     }
 
-    const userRef = db.collection('users').doc(uid);
+    const userRef = db.collection('watchlists').doc(uid);
 
-    // Add the stock symbol to the user's watchlist
+    // Add the stock symbol to the user's watchlist (array of symbol and company name)
     await userRef.update({
-        watchlist: admin.firestore.FieldValue.arrayUnion(stockSymbol)
+        stocks: admin.firestore.FieldValue.arrayUnion({
+            symbol: stockSymbol,
+            companyName: companyName
+        })
     });
+
+    console.log("Added to watchlist.");
 
     res.status(200).send("Added to watchlist.");
 });
@@ -109,10 +148,23 @@ router.post('/watchlist/remove', checkAuth, async (req, res) => {
 
     const userRef = db.collection('watchlists').doc(uid);
 
-    // Remove the stock symbol from the user's watchlist
+// Schritt 1: Aktuelle Liste von Stocks abrufen
+    const doc = await userRef.get();
+    const currentStocks = doc.data().stocks || [];
+
+// Schritt 2: Die Map mit dem gewünschten Symbol aus der Liste entfernen
+    const updatedStocks = currentStocks.filter(stock => stock.symbol !== stockSymbol);
+
+// Schritt 3: Die aktualisierte Liste zurück in Firestore schreiben
     await userRef.update({
-        stocks: admin.firestore.FieldValue.arrayRemove(stockSymbol)
+        stocks: updatedStocks
     });
+
+
+    // // Remove the stock symbol from the user's
+    // await userRef.update({
+    //     stocks: admin.firestore.FieldValue.arrayRemove(stockSymbol)
+    // });
 
     res.status(200).send("Removed from watchlist.");
 });
