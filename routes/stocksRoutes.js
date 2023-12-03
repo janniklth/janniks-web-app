@@ -148,23 +148,17 @@ router.post('/watchlist/remove', checkAuth, async (req, res) => {
 
     const userRef = db.collection('watchlists').doc(uid);
 
-// Schritt 1: Aktuelle Liste von Stocks abrufen
+    // get all stocks from the user's watchlist
     const doc = await userRef.get();
     const currentStocks = doc.data().stocks || [];
 
-// Schritt 2: Die Map mit dem gewünschten Symbol aus der Liste entfernen
+    // remove the stock symbol from the user's watchlist
     const updatedStocks = currentStocks.filter(stock => stock.symbol !== stockSymbol);
 
-// Schritt 3: Die aktualisierte Liste zurück in Firestore schreiben
+    // push the updated watchlist to the database
     await userRef.update({
         stocks: updatedStocks
     });
-
-
-    // // Remove the stock symbol from the user's
-    // await userRef.update({
-    //     stocks: admin.firestore.FieldValue.arrayRemove(stockSymbol)
-    // });
 
     res.status(200).send("Removed from watchlist.");
 });

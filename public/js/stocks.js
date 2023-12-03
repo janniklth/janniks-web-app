@@ -302,12 +302,12 @@ function createStockElement(symbol, name) {
     // Create an element for the stock price
     const priceElement = document.createElement("div");
     priceElement.classList.add("font-weight-bold");
-    priceElement.textContent = "Current Price"; // Placeholder for stock price
+    priceElement.textContent = "0.00 USD"; // Placeholder for stock price
 
     // Create an element for the stock change (positive oder negativ)
     const changeElement = document.createElement("div");
     changeElement.classList.add("font-weight-bold");
-    changeElement.textContent = "+2.45%"; // Placeholder for stock change
+    changeElement.textContent = "+0.00%"; // Placeholder for stock change
     if (false) {
         changeElement.classList.add("text-danger");
     } else {
