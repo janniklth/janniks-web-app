@@ -12,7 +12,8 @@ const alertContainer = document.getElementById('alertContainer');
 const now = new Date();
 dateInput.value = now.toISOString().slice(0, 10);
 
-
+// disable past dates in date input
+dateInput.setAttribute('min', now.toISOString().slice(0, 10));
 
 // add event listener to update the select options (stations) when the input changes
 searchStationInput.addEventListener('input', async (event) => {
