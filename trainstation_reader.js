@@ -14,24 +14,26 @@ function findIdForName(stationName) {
     });
 
     return new Promise((resolve, reject) => {
+        let matchFound = false;
+
         rl.on('line', (line) => {
             const parts = line.split(';');
             if (parts[3] === stationName) {
+                matchFound = true;
                 rl.close(); // End reading the file as a match was found
                 resolve(parts[0]);
             }
         });
 
         rl.on('close', () => {
-            if (!rl.closed) {
-                // Check if the 'close' event was called due to a match
-                reject('No ID found for stationName: ' + stationName);
+            if (!matchFound) {
+                // Check if a match was found during the entire reading
+                reject('ID Error: No ID found for stationName: ' + stationName);
             }
         });
     });
-
-    rl.closed = false; // A custom property to track whether 'close' was manually called
 }
+
 
 
 function findNameForId(stationId) {

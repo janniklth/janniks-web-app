@@ -22,7 +22,7 @@ window.addEventListener('load', () => {
             logoutButton.classList.remove('d-none');
         })
         .catch(error => {
-            console.error("Error while checking login status:", error);
+            console.warn("Error while checking login status:", error);
             loginButton.classList.remove('d-none');
             logoutButton.classList.add('d-none');
         });
