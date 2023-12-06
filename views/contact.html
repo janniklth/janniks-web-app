@@ -18,7 +18,11 @@
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
             rel="stylesheet"
     />
-    <title>About - Janniks Web App</title>
+
+    <!-- reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <title>Contact - Janniks Web App</title>
 </head>
 <body>
 
@@ -55,11 +59,17 @@
                     <a class="nav-link" href="/wikisearch">Wikisearch</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/about">About</a>
+                    <a class="nav-link" href="/train_dashboard">Trains</a>
                 </li>
-                <button id="loginButton" type="button" class="btn btn-link me-3">
-                    Login / Sign up
-                </button>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/contact">Contact</a>
+                </li>
+                <li id="loginButton" class=" nav-item">
+                    <a class="nav-link text-primary" href="/login">Login / Sign up</a>
+                </li>
+                <li id="logoutButton" class=" nav-item">
+                    <a class="nav-link text-primary" href="/auth/logout">Logout</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -67,7 +77,28 @@
 
 <!-- main content -->
 <div class="container mt-5">
-    <h1>About</h1>
+    <div class="container mt-5">
+        <h1>Contact Us</h1>
+        <form id="contactForm">
+            <!-- Your form fields go here -->
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <!-- Add more fields as needed -->
+
+            <!-- Google ReCAPTCHA -->
+            <div class="g-recaptcha" id="recaptchaContainer" data-sitekey="RECAPTCHA_PUBLIC_KEY"></div>
+
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
+    </div>
+
+
 </div>
 
 <!-- Footer -->
@@ -78,7 +109,8 @@
 </footer>
 
 <!-- Custom Script -->
-<script src="../public/js/main.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/contact.js"></script>
 
 <!-- MDB Script -->
 <script

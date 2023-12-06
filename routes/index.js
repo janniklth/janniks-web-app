@@ -50,8 +50,8 @@ router.get('/train_dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'train_dashboard.html'));
 });
 
-router.get('/about', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'about.html'));
+router.get('/contact', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'contact.html'));
 });
 
 router.get('/register', (req, res) => {
@@ -66,6 +66,16 @@ router.get('/login', (req, res) => {
 
 router.get('/wikisearch', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'wikisearch.html'));
+});
+
+// recaptcha routes
+router.get('/recaptcha/get-recaptcha-key', async (req, res) => {
+    const recaptchaSiteKey = process.env.RECAPTCHA_SITE_KEY;
+    res.status(200).send({recaptchaSiteKey});
+});
+
+router.post('/recaptcha/verify', async (req, res) => {
+
 });
 
 router.get('/searchwiki', async (req, res) => {
