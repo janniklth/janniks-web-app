@@ -130,6 +130,14 @@ This architecture ensures a secure and controlled environment for handling sensi
    - Each feature has dedicated client-side logic for a seperated file structure.
    - It enhances the user experience by enabling updates without need for page reloads.
 
+- **User authentication**
+  - The user authentication is implemented with Firebase and Firestore and secure by google recaptcha.
+  - The user can create an account, login and logout.
+  - The login status is saved in a cookie, so the user does not have to login every time he visits the website.
+  - The login status is checked on every page, so you can on every page see if you are logged in or not (e.g. the navbar login/logout button changes)
+  - On every registration, the user gets a unique id, which is used to create a watchlist in the database, which is connected to the user.
+  - Even on a local installation, the watchlist is stored in the database and can be accessed from every device, as long as the user is logged in.
+
 ## Conclusion:
 
 The development of this web application presented both challenges and learning opportunities. Here are some key takeaways in addition to the bugs and features mentioned above:
