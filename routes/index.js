@@ -51,10 +51,6 @@ router.get('/train_dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'train_dashboard.html'));
 });
 
-router.get('/contact', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'contact.html'));
-});
-
 router.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'register.html'));
 });
