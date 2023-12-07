@@ -22,12 +22,12 @@ The project was part of my Web Engineering course at the DHBW Stuttgart.
 4. **Open in Browser:**
    Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
 
-### Standard Installation (If yout want to code yourself)
+### Standard Installation (If you want to code yourself)
 
 1. **Clone the Repository:**
     ```bash
-    git clone https://github.com/your-username/your-repo.git
-    cd your-repo
+    git https://github.com/janniklth/janniks-web-app.git
+    cd janniks-web-app
     ```
 
 2. **Install Dependencies:**
@@ -69,7 +69,7 @@ The project was part of my Web Engineering course at the DHBW Stuttgart.
 
 ### Wikisearch with Reader
 - Search and explore information from Wikipedia.
-- Enjoy a reader-friendly interface for a better reading experience.
+- Listen to the article with the built-in reader.
 
 ### Train Dashboard
 - View train timetables and departure information.
