@@ -302,16 +302,18 @@ function createStockElement(symbol, name) {
     // Create an element for the stock price
     const priceElement = document.createElement("div");
     priceElement.classList.add("font-weight-bold");
-    priceElement.textContent = "0.00 USD"; // Placeholder for stock price
+    // random price
+    priceElement.textContent = (Math.random() * 450).toFixed(2) + " USD";
 
     // Create an element for the stock change (positive oder negativ)
     const changeElement = document.createElement("div");
     changeElement.classList.add("font-weight-bold");
-    changeElement.textContent = "+0.00%"; // Placeholder for stock change
-    if (false) {
+    changeElement.textContent = (Math.random() * 10 - 5).toFixed(2) + "%"; // random dummy value
+    if (changeElement.textContent.startsWith("-")) {
         changeElement.classList.add("text-danger");
     } else {
         changeElement.classList.add("text-success");
+        changeElement.textContent = "+" + changeElement.textContent;
     }
 
     // Create a container for the delete icon (col-1)
