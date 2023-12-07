@@ -113,8 +113,50 @@ The project was part of my Web Engineering course at the DHBW Stuttgart.
 - The buttons resize on click for some reason
 - I tried to fix it, but it was not reproducible on other projects
 
+## Functionality Overview:
+
+The web application is designed with a combination of server-side and client-side JavaScript, utilizing various routes to manage different features. 
+Most of the routes are structured in extra files, to have a clean function-related file structure. 
+To mitigate Cross-Origin Resource Sharing (CORS) and keep API keys secure, most requests are routed through the server. 
+This architecture ensures a secure and controlled environment for handling sensitive information and stores the api keys in a .env file, which is not uploaded to github.
+
+- **Server-side JS and Routes:**
+   - The server is implemented using JavaScript, handling routes for different features such as weather, news, stocks, wikisearch, and trains.
+   - Each feature has dedicated server-side logic/routes for processing requests, interacting with APIs, and delivering data to the client.
+   - There are some general routes for the login, logout, register, and the watchlist which are used on every page.
+
+- **Client-side JS:**
+   - Client-side JavaScript is responsible for rendering dynamic content, handling user interactions, and making requests to the server.
+   - Each feature has dedicated client-side logic for a seperated file structure.
+   - It enhances the user experience by enabling updates without need for page reloads.
+
+## Conclusion:
+
+The development of this web application presented both challenges and learning opportunities. Here are some key takeaways in addition to the bugs and features mentioned above:
+
+- **API Challenges:**
+   - The train API posed challenges due to its limited time range, requiring creative solutions to fetch relevant data.
+   - The third-party APIs used for news sometimes delivered redundant articles, necessitating additional logic for content filtering.
+
+- **Firebase and Firestore:**
+   - Implementing Firebase and Firestore for user authentication and data storage provided valuable insights into creating a secure and scalable web application.
+   - The lack of comprehensive documentation for the Firestore database API in connection with NodeJS Server/Client app required extensive trial and error.
+
+- **Bootstrap:**
+   - Bootstrap played a crucial role in simplifying the design process, allowing focus on functionality over intricate styling.
+   - The framework provided a responsive and visually appealing layout for the web application.
+
+- **Continuous Learning:**
+   - Developing this project offered a significant learning experience in structuring and organizing a web application.
+   - It served as an opportunity to explore secure user authentication practices, database management, and handling complex API integrations as well as deepening my knowledge of JavaScript and NodeJS and clean code principles.
+
+Overall, the project provided a platform for experimentation and growth.
+I am looking forward to continuing this project and adding more features in the future.
+
 Feel free to explore and provide feedback. Happy browsing!
 
 ---
 
 *Note: Update the URLs, keys, and other configurations as needed for your specific setup.*
+
+*Note: I used a translator to have a uniform language over the whole project.*
