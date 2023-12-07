@@ -6,7 +6,7 @@ The project was part of my Web Engineering course at the DHBW Stuttgart.
 
 ### Docker Installation
 
-1. **Open docker desktop**
+1. **Install and open docker desktop**
 
 
 2. **Open the project folder in the terminal and run the following commands to build the docker image:**
@@ -81,7 +81,8 @@ The project was part of my Web Engineering course at the DHBW Stuttgart.
 ### Stock Dashboard
 - Track stock prices and view relevant financial information.
 - Customize your stock watchlist for personalized tracking. (with dummy data due to limited API calls)
-- Note: The demo watchlist (muster@mail.de) is already filled with some stocks.
+- Note: The demo watchlist (see below for credentials) is already filled with some stocks.
+- Note: You can only search for exact american stock symbols (e.g. AAPL for Apple Inc. or MSFT for Microsoft Corporation)
 
 ### Wikisearch with Reader
 - Search and explore information from Wikipedia.
