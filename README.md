@@ -100,6 +100,10 @@ The project was part of my Web Engineering course at the DHBW Stuttgart.
     - Email: muster@mail.de
     - Password: 12345678
 
+### Docker use
+- The project can be run in a docker container.
+- See above for installation instructions.
+
 ### Website Runs on Server
 - Deployed version of the website is accessible at [janniks-web-app.de](https://janniks-web-app.onrender.com/).
 - Maybe this could get an extra credit point? :)
