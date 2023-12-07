@@ -7,16 +7,39 @@ const registerLastName = document.getElementById('registerLastName');
 const registerEmail = document.getElementById('registerEmail');
 const registerPassword = document.getElementById('registerPassword');
 
+
+// Get the recaptcha key from the server on load
+function onRecaptchaLoad() {
+    // get the reCAPTCHA Site Key from the server
+    fetch('/recaptcha/get-recaptcha-key')
+        .then(response => response.json())
+        .then(data => {
+            const recaptchaSiteKey = data.recaptchaSiteKey;
+
+            // render the reCAPTCHA on the element with ID "recaptchaContainer"
+            grecaptcha.render('recaptchaContainer', {
+                sitekey: recaptchaSiteKey
+            });
+        })
+        .catch(error => {
+            console.error('Error getting the recaptcha site key:', error);
+        });
+}
+
 registerForm.addEventListener('submit', function (e) {
     // prevent default form action from being carried out
     e.preventDefault();
+
+    // get recaptcha token
+    const recaptchaToken = grecaptcha.getResponse();
 
     // get data from the form
     const formData = {
         firstName: registerFirstName.value,
         lastName: registerLastName.value,
         email: registerEmail.value,
-        password: registerPassword.value
+        password: registerPassword.value,
+        recaptchaToken: recaptchaToken
     };
 
     // send the data via POST request to the server

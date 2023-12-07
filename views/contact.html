@@ -20,7 +20,8 @@
     />
 
     <!-- reCAPTCHA -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
+
 
     <title>Contact - Janniks Web App</title>
 </head>
@@ -92,7 +93,7 @@
             <!-- Add more fields as needed -->
 
             <!-- Google ReCAPTCHA -->
-            <div class="g-recaptcha" id="recaptchaContainer" data-sitekey="RECAPTCHA_PUBLIC_KEY"></div>
+            <div class="g-recaptcha" id="recaptchaContainer"></div>
 
             <button type="submit" class="btn btn-primary mt-3">Submit</button>
         </form>

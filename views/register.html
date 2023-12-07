@@ -18,6 +18,11 @@
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
             rel="stylesheet"
     />
+
+    <!-- reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
+
+
     <title>Register - Janniks Web App</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -118,6 +123,9 @@
                                     <input type="password" id="registerPassword" class="form-control" required
                                            placeholder="Password"/>
                                 </div>
+
+                                <!-- Google ReCAPTCHA -->
+                                <div class="g-recaptcha mb-4" id="recaptchaContainer"></div>
 
                                 <!-- Submit button -->
                                 <button type="submit" id="registerButton" class="btn btn-primary btn-block mb-4" style="max-height: 38px">

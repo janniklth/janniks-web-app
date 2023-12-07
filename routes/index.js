@@ -5,6 +5,7 @@ const path = require('path');
 const axios = require('axios');
 const router = express.Router();
 const bodyParser = require('body-parser');
+const { verifyRecaptcha } = require('../recaptcha');
 
 
 
@@ -74,9 +75,6 @@ router.get('/recaptcha/get-recaptcha-key', async (req, res) => {
     res.status(200).send({recaptchaSiteKey});
 });
 
-router.post('/recaptcha/verify', async (req, res) => {
-
-});
 
 router.get('/searchwiki', async (req, res) => {
     const searchTerm = req.query.q;
@@ -117,11 +115,20 @@ router.get('/searchwiki', async (req, res) => {
 
 
 router.post('/auth/register', async (req, res) => {
-    console.log(req.body);
+
+    const recaptchaToken = req.body.recaptchaToken;
+
+    // check if recaptcha token is valid
+    const isRecaptchaValid = await verifyRecaptcha(recaptchaToken);
+
+    if (!isRecaptchaValid) {
+        return res.status(400).send('ReCAPTCHA validation failed');
+    }
+
+
     createUserWithEmailAndPassword(auth, req.body.email, req.body.password)
         .then(async (userCredential) => {
             const user = userCredential.user;
-            console.log(user);
 
             // add user data to database
             const userRef = db.collection('users').doc(user.uid);
