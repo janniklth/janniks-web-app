@@ -17,6 +17,7 @@ const db_client_secret = process.env.DB_CLIENT_SECRET;
 const axios = require('axios');
 
 
+// function to add names to the results of the autocomplete function
 async function addNamesToResults(results) {
     for (const result of results) {
         try {
@@ -29,6 +30,7 @@ async function addNamesToResults(results) {
     }
 }
 
+// import the autocomplete function from the db-stations-autocomplete module and use it
 import('db-stations-autocomplete').then((module) => {
     const { autocomplete } = module;
     router.get('/autocompleteStations', async (req, res) => {
@@ -47,6 +49,7 @@ import('db-stations-autocomplete').then((module) => {
     console.error('Fehler beim Importieren des Moduls:', error);
 });
 
+// route for getting the timetable
 router.get('/getTimetable', async (req, res) => {
     const stationName = req.query.stationName;
     const date = new Date(req.query.date);

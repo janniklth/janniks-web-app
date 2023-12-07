@@ -9,9 +9,9 @@ const axios = require('axios');
 const process = require('process');
 const {checkAuth} = require("../middleware");
 const {db, admin} = require("../firebase");
-// ...
 
 
+// route for getting stock data
 router.get('/fetchStockData', async (req, res) => {
     try {
         // check if all required query parameters are set
@@ -59,7 +59,7 @@ router.get('/fetchStockData', async (req, res) => {
     }
 });
 
-
+// route for getting company data
 router.get('/fetchCompanyData', async (req, res) => {
     try {
         // check if all required query parameters are set
@@ -91,6 +91,7 @@ router.get('/fetchCompanyData', async (req, res) => {
     }
 });
 
+// route for getting the watchlist
 router.get('/watchlist/get', checkAuth, async (req, res) => {
     const uid = req.session.user;
 
@@ -109,6 +110,7 @@ router.get('/watchlist/get', checkAuth, async (req, res) => {
     res.status(200).json(watchlistDoc.data());
 });
 
+// route for adding a stock to the watchlist
 router.post('/watchlist/add', checkAuth, async (req, res) => {
     const uid = req.session.user;
     const stockSymbol = req.body.stockSymbol;
@@ -136,6 +138,7 @@ router.post('/watchlist/add', checkAuth, async (req, res) => {
     res.status(200).send("Added to watchlist.");
 });
 
+// route for removing a stock from the watchlist
 router.post('/watchlist/remove', checkAuth, async (req, res) => {
     const uid = req.session.user;
     const stockSymbol = req.body.stockSymbol;

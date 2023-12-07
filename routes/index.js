@@ -8,8 +8,6 @@ const bodyParser = require('body-parser');
 const { verifyRecaptcha } = require('../recaptcha');
 
 
-
-
 // firebase and auth
 const {auth, admin, db} = require('../firebase');
 const {checkAuth} = require('../middleware');
@@ -25,9 +23,11 @@ router.use(session({
     saveUninitialized: true
 }));
 
+// import train routes
 const trainRoutes = require('./trainRoutes');
 router.use('/train', trainRoutes);
 
+// import stock routes
 const stocksRoutes = require('./stocksRoutes');
 router.use('/stocks', stocksRoutes);
 
@@ -108,8 +108,6 @@ router.get('/searchwiki', async (req, res) => {
 
 
 
-
-
 router.post('/auth/register', async (req, res) => {
 
     const recaptchaToken = req.body.recaptchaToken;
@@ -186,8 +184,6 @@ router.get('/auth/check', async (req, res) => {
         res.status(401).send('User is not logged in!');
     }
 });
-
-
 
 
 
