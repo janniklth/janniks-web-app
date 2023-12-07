@@ -148,7 +148,7 @@ function fetchCompanyData(stockSymbol) {
             // Clear watchlist container and show error message
             alertContainer.innerHTML = `
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Error while fetching company data: ${error.message}
+                    Error finding the stock: ${error.message}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span> 
                     </button>
@@ -208,7 +208,7 @@ function fetchStockData(stockSymbol) {
             // Clear watchlist container and show error message
             alertContainer.innerHTML = `
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Error while fetching stock data: ${error.message}
+                    Error finding the stock symbol: ${error.message}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
