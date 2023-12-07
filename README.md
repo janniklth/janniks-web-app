@@ -60,6 +60,7 @@ Welcome to Jannik's Web App! This web application provides various features, inc
 ### News Search
 - Search for the latest news articles.
 - Stay informed with up-to-date news from various sources.
+- No RSS feed, but therefore i implemented a search function
 
 ### Stock Dashboard
 - Track stock prices and view relevant financial information.
@@ -87,6 +88,11 @@ Welcome to Jannik's Web App! This web application provides various features, inc
 - should not be graded, because it is not fully functional
 - did not delete it, because I might want to finish it in the future
 
+### Error Handling
+- Error handling for invalid routes and server errors.
+- Error handling for invalid user input.
+- Error handling for invalid API responses.
+
 ## Bugs
 
 ### Train API
@@ -97,6 +103,11 @@ Welcome to Jannik's Web App! This web application provides various features, inc
 
 ### Stock Dashboard
 - Watchlist is not updated in real-time, because of limited API calls per day.
+
+### Bootstrap Buttons
+- Bootstrap buttons are not displayed correctly sometimes
+- The buttons resize on click for some reason
+- I tried to fix it, but it was not reproducible on other projects
 
 Feel free to explore and provide feedback. Happy browsing!
 
