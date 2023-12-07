@@ -1,6 +1,7 @@
 # Jannik's Web App
 
 Welcome to Jannik's Web App! This web application provides various features, including News Search, Stock Dashboard, Wikisearch with Reader, Train Dashboard, and secure user authentication with Recaptcha and database connection for the watchlist.
+The project was part of my Web Engineering course at the DHBW Stuttgart.
 
 
 ### Docker Installation
