@@ -79,6 +79,9 @@ The project was part of my Web Engineering course at the DHBW Stuttgart.
 - Secure user authentication with Recaptcha verification.
 - Persistent login using cookies.
 - Personalized watchlist stored in the database.
+- Create your own account and login to access your watchlist or use the test account with the following credentials:
+    - Email: muster@mail.de
+    - Password: 12345678
 
 ### Website Runs on Server
 - Deployed version of the website is accessible at [janniks-web-app.de](https://janniks-web-app.onrender.com/).
