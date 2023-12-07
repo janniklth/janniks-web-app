@@ -45,11 +45,11 @@ searchButton.addEventListener('click', function () {
             resultsDiv.appendChild(rowDiv);
 
             data.results.forEach(article => {
-                // Erstellen Sie eine Bootstrap-Spalte für jeden Artikel
+                // create a column for each article
                 const colDiv = document.createElement('div');
                 colDiv.className = 'col-lg-6';
 
-                // Erstellen Sie eine Bootstrap-Karte für jeden Artikel innerhalb der Spalte
+                // create a card for each article
                 const card = document.createElement('div');
                 card.className = 'card mb-4';
 
@@ -82,7 +82,7 @@ searchButton.addEventListener('click', function () {
 
                 card.appendChild(cardBody);
                 colDiv.appendChild(card);
-                rowDiv.appendChild(colDiv); // Fügen Sie die Spalte zur Reihe hinzu
+                rowDiv.appendChild(colDiv);
             });
 
         })
