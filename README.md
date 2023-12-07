@@ -106,7 +106,8 @@ The project was part of my Web Engineering course at the DHBW Stuttgart.
 - Occasional repetition of similar articles.
 
 ### Stock Dashboard
-- Watchlist is not updated in real-time, because of limited API calls per day.
+- Watchlist is not updated, because of limited API calls per day.
+- It should only show the database connection
 
 ### Bootstrap Buttons
 - Bootstrap buttons are not displayed correctly sometimes
