@@ -6,21 +6,36 @@ The project was part of my Web Engineering course at the DHBW Stuttgart.
 
 ### Docker Installation
 
-1. **Build the Docker Image:**
+1. **Open docker desktop**
+
+
+2. **Open the project folder in the terminal and run the following commands to build the docker image:**
     ```bash
     docker build -t your-image-name .
     ```
+    You can choose any name for the image, but it is recommended to use a name that is related to the project.
 
-2. **Run the Docker Container:**
+3. **Run the Docker Container:**
     ```bash
     docker run -p 3000:3000 -d your-image-name
     ```
 
-3. **Configure Environment Variables (if not set in Dockerfile):**
-   If any environment variables are not set in the Dockerfile, create a `.env` file and configure them.
-
 4. **Open in Browser:**
    Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
+---
+5. **Stop the Docker Container:**
+    ```bash
+    docker stop your-container-id
+    ```
+   The container id is printed out when you run the container or you can get it with the following command:
+    ```bash
+    docker ps
+    ```
+   
+6. **Remove the Docker Container:**
+    ```bash
+    docker rm your-container-id
+    ```
 
 ### Standard Installation (If you want to code yourself)
 
@@ -65,7 +80,8 @@ The project was part of my Web Engineering course at the DHBW Stuttgart.
 
 ### Stock Dashboard
 - Track stock prices and view relevant financial information.
-- Customize your stock watchlist for personalized tracking.
+- Customize your stock watchlist for personalized tracking. (with dummy data due to limited API calls)
+- Note: The demo watchlist (muster@mail.de) is already filled with some stocks.
 
 ### Wikisearch with Reader
 - Search and explore information from Wikipedia.
