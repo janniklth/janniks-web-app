@@ -97,6 +97,11 @@ function extractTrainInfo(connection) {
         trainInfo.shortTrainNumber = departure.l;
     }
 
+    // if train type is S or RE, set train number to short train number
+    if (trainInfo.trainType === 'S' || trainInfo.trainType === 'RE') {
+        trainInfo.trainNumber = trainInfo.shortTrainNumber;
+    }
+
     // log the train info
     console.log(trainInfo);
 
@@ -200,8 +205,8 @@ searchButton.addEventListener('click', async () => {
             // Create and append cards for each valid train
             validTrains.forEach(train => {
                 const trainInfo = extractTrainInfo(train);
-                const customCard = createTrainCard(trainInfo);
-                timetableContainer.appendChild(customCard);
+                const trainInfoCard = createTrainCard(trainInfo);
+                timetableContainer.appendChild(trainInfoCard);
             });
 
         } else {
