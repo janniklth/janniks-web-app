@@ -29,7 +29,8 @@
     <!-- Title -->
     <title>Stocks - Janniks Web App</title>
 </head>
-<body>
+
+<body class="d-flex flex-column min-vh-100">
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -78,93 +79,97 @@
 </nav>
 
 <!-- main content -->
-<div class="container-fluid">
-    <div class="row h-100 mt-3">
-        <!-- left column -->
-        <div class="col-md-7 d-flex flex-column">
-            <!-- Search Bar -->
-            <div class="card mb-3 flex-grow-1">
-                <div class="input-group">
-                    <input type="text" id="searchStockTerm" class="form-control" placeholder="Search stock...">
-                    <div class="input-group-append">
-                        <select id="timePeriodSelect" class="form-select">
-                            <option value="1m">1 Month</option>
-                            <option value="3m">3 Months</option>
-                            <option value="6m">6 Months</option>
-                            <option value="1y">1 Year</option>
-                        </select>
-                        <button id="searchStockButton" class="btn-secondary" type="button">Search
-                            <!--                                style="max-width: 76.7px; max-height: 38px;">Search-->
+<section class="flex-grow-1 d-flex">
+    <div class="container-fluid">
+        <div class="row h-100 mt-3">
+            <!-- left column -->
+            <div class="col-md-7 d-flex flex-column">
+                <!-- Search Bar -->
+                <div class="card mb-3 flex-grow-1">
+                    <div class="input-group">
+                        <input type="text" id="searchStockTerm" class="form-control" placeholder="Search stock...">
+                        <div class="input-group-append">
+                            <select id="timePeriodSelect" class="form-select">
+                                <option value="1m">1 Month</option>
+                                <option value="3m">3 Months</option>
+                                <option value="6m">6 Months</option>
+                                <option value="1y">1 Year</option>
+                            </select>
+                            <button id="searchStockButton" class="btn-secondary" type="button">Search
+                                <!--                                style="max-width: 76.7px; max-height: 38px;">Search-->
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Alert Container -->
+                <div id="alertContainer"></div>
+
+                <!-- actual course -->
+                <div class="card mb-3 flex-grow-1 custom-card-height d-none" id="actualCourseCard">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h2 id="companyName">.......</h2>
+                            <h3 id="stockPrice">$000.00</h3>
+                        </div>
+                        <div>
+                            <h5 id="stockChange">+0.00 (+0.00%)</h5>
+                            <p id="lastUpdated">Last updated: 00:00 AM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- general stock info -->
+                <div class="card mb-3 flex-grow-1 d-none" id="generalInfoCard">
+                    <div class="card-body">
+                        <h5 class="card-title">Stock Info</h5>
+
+                        <!-- split info into two columns -->
+                        <div class="row">
+                            <div class="col">
+                                <p><strong>Market Cap:</strong> <span id="marketCap">$0.0T</span></p>
+                                <p><strong>Opening:</strong> <span id="openPrice">$000.00</span></p>
+                            </div>
+                            <div class="col">
+                                <p><strong>High:</strong> <span id="highPrice">$000.00</span></p>
+                                <p><strong>Low:</strong> <span id="lowPrice">$000.00</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Chart Card -->
+                <div class="card mb-3 flex-grow-1 d-none" id="chartCard">
+                    <div class="card-body">
+                        <h5 class="card-title">Stock Chart</h5>
+                        <div id="chartContainer" style="height: 300px;"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- right column -->
+            <div class="col-md-5 mb-3">
+                <!-- Watchlist -->
+                <div class="card h-100 d-flex flex-column">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Watchlist</h5>
+                        <!-- Beispielaktien für die Watchlist -->
+                        <div id="watchlistContainer" class="list-group">
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button id="addToWatchlistButton" class="btn btn-primary mt-3 d-none"
+                                style="width: 100%; max-height: 40px;">Add to Watchlist
                         </button>
                     </div>
                 </div>
             </div>
-
-
-            <!-- Alert Container -->
-            <div id="alertContainer"></div>
-
-            <!-- actual course -->
-            <div class="card mb-3 flex-grow-1 custom-card-height d-none" id="actualCourseCard">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <h2 id="companyName">.......</h2>
-                        <h3 id="stockPrice">$000.00</h3>
-                    </div>
-                    <div>
-                        <h5 id="stockChange">+0.00 (+0.00%)</h5>
-                        <p id="lastUpdated">Last updated: 00:00 AM</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- general stock info -->
-            <div class="card mb-3 flex-grow-1 d-none" id="generalInfoCard">
-                <div class="card-body">
-                    <h5 class="card-title">Stock Info</h5>
-
-                    <!-- split info into two columns -->
-                    <div class="row">
-                        <div class="col">
-                            <p><strong>Market Cap:</strong> <span id="marketCap">$0.0T</span></p>
-                            <p><strong>Opening:</strong> <span id="openPrice">$000.00</span></p>
-                        </div>
-                        <div class="col">
-                            <p><strong>High:</strong> <span id="highPrice">$000.00</span></p>
-                            <p><strong>Low:</strong> <span id="lowPrice">$000.00</span></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Chart Card -->
-            <div class="card mb-3 flex-grow-1 d-none" id="chartCard">
-                <div class="card-body">
-                    <h5 class="card-title">Stock Chart</h5>
-                    <div id="chartContainer" style="height: 300px;"></div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- right column -->
-        <div class="col-md-5 mb-3">
-            <!-- Watchlist -->
-            <div class="card h-100 d-flex flex-column">
-                <div class="card-body">
-                    <h5 class="card-title mb-4">Watchlist</h5>
-                    <!-- Beispielaktien für die Watchlist -->
-                    <div id="watchlistContainer" class="list-group">
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <button id="addToWatchlistButton" class="btn btn-primary mt-3 d-none" style="width: 100%; max-height: 40px;">Add to Watchlist</button>
-                </div>
-            </div>
         </div>
     </div>
-</div>
+</section>
 
 <!-- Footer -->
 <footer class="footer mt-auto py-3 bg-light">

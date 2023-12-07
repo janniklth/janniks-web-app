@@ -20,7 +20,8 @@
     />
     <title>Home - Janniks Web App</title>
 </head>
-<body>
+
+<body class="d-flex flex-column min-vh-100">
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -69,78 +70,86 @@
 </nav>
 
 <!-- main content -->
-<div class="container mt-5">
-    <h1>Welcome</h1>
+<section class="flex-grow-1 d-flex">
+    <div class="container mt-5">
+        <h1>Welcome</h1>
 
-    <!-- Feature Cards -->
-    <div class="row mt-4">
-        <!-- News Search Card -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">News Search</h5>
-                    <p class="card-text">Stay updated with the latest news. Search and explore news articles from various sources.</p>
-                    <a href="/news" class="btn btn-primary">Explore News</a>
+        <!-- Feature Cards -->
+        <div class="row mt-4">
+            <!-- News Search Card -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">News Search</h5>
+                        <p class="card-text">Stay updated with the latest news. Search and explore news articles from
+                            various sources.</p>
+                        <a href="/news" class="btn btn-primary">Explore News</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Stock Dashboard Card -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Stock Dashboard</h5>
-                    <p class="card-text">Monitor stock prices and track your favorite stocks in real-time with interactive charts.</p>
-                    <a href="/stocks" class="btn btn-primary">Explore Stocks</a>
+            <!-- Stock Dashboard Card -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Stock Dashboard</h5>
+                        <p class="card-text">Monitor stock prices and track your favorite stocks in real-time with
+                            interactive charts.</p>
+                        <a href="/stocks" class="btn btn-primary">Explore Stocks</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Wikisearch with Reader Card -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Wikisearch with Reader</h5>
-                    <p class="card-text">Search and read Wikipedia articles with ease. Use the reader mode, if you don't want to read yourself :)</p>
-                    <a href="/wikisearch" class="btn btn-primary">Explore Wikisearch</a>
+            <!-- Wikisearch with Reader Card -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Wikisearch with Reader</h5>
+                        <p class="card-text">Search and read Wikipedia articles with ease. Use the reader mode, if you
+                            don't want to read yourself :)</p>
+                        <a href="/wikisearch" class="btn btn-primary">Explore Wikisearch</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Train Dashboard Card -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Train Dashboard</h5>
-                    <p class="card-text">Check train schedules, plan your journeys, and stay informed about platform details for every station in germany.</p>
-                    <a href="/train_dashboard" class="btn btn-primary">Explore Trains</a>
+            <!-- Train Dashboard Card -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Train Dashboard</h5>
+                        <p class="card-text">Check train schedules, plan your journeys, and stay informed about platform
+                            details for every station in germany.</p>
+                        <a href="/train_dashboard" class="btn btn-primary">Explore Trains</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Weather Card -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Weather</h5>
-                    <p class="card-text">Get real-time weather updates and forecasts for your location or any city worldwide. Should not be graded.</p>
-                    <a href="/weather" class="btn btn-primary">Check Weather</a>
+            <!-- Weather Card -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Weather</h5>
+                        <p class="card-text">Get real-time weather updates and forecasts for your location or any city
+                            worldwide. Should not be graded.</p>
+                        <a href="/weather" class="btn btn-primary">Check Weather</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Login/Register Card -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Login / Register</h5>
-                    <p class="card-text">Securely log in or register with recaptcha to personalize your experience and access additional features like the watchlist</p>
-                    <a href="/login" class="btn btn-primary">Login / Register</a>
+            <!-- Login/Register Card -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Login / Register</h5>
+                        <p class="card-text">Securely log in or register with recaptcha to personalize your experience
+                            and access additional features like the watchlist</p>
+                        <a href="/login" class="btn btn-primary">Login / Register</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 
 <!-- Footer -->
